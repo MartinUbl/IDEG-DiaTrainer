@@ -1,0 +1,12 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:f="clr-namespace:IDEG_DiaTrainer.Helpers"
+             NavigationPage.HasBackButton="True"
+             NavigationPage.HasNavigationBar="True"
+             Title="Meals"
+             x:Class="IDEG_DiaTrainer.Pages.Popups.MealConfirmPopup">
+    <StackLayout Orientation="Vertical" x:Name="TargetLayout">
+        
+        <Button x:Name="ConfirmButton" Text="Select meal" HorizontalOptions="End" Clicked="ConfirmButton_Clicked" />
+    </StackLayout>
+</ContentPage>

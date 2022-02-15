@@ -1,0 +1,52 @@
+﻿<GridLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:f="clr-namespace:IDEG_DiaTrainer.Helpers"
+      x:Class="IDEG_DiaTrainer.Helpers.FoodBlock"
+      Padding="16">
+
+    <GridLayout.Resources>
+        <f:OutputConverter x:Key="OutConv" />
+    </GridLayout.Resources>
+
+    <GridLayout.GestureRecognizers>
+        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
+    </GridLayout.GestureRecognizers>
+
+    <GridLayout.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+    </GridLayout.ColumnDefinitions>
+    <GridLayout.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+    </GridLayout.RowDefinitions>
+
+    <Image GridLayout.Row="0" GridLayout.Column="0" GridLayout.ColumnSpan="2" HorizontalOptions="CenterAndExpand" WidthRequest="192" HeightRequest="192" Aspect="AspectFit" x:Name="FoodImage" />
+    <Label GridLayout.Row="1" GridLayout.Column="0" GridLayout.ColumnSpan="2" HorizontalOptions="Center" LineBreakMode="WordWrap" FontAttributes="Bold" FontSize="Subtitle" Text="{Binding Name}" />
+
+    <Label GridLayout.Row="2" GridLayout.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Calories" Padding="6" />
+    <Label GridLayout.Row="2" GridLayout.Column="1" HorizontalOptions="Start" Text="{Binding Calories, StringFormat='{0} kJ'}" Padding="6" />
+    
+    <Label GridLayout.Row="3" GridLayout.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Carbohydrates" Padding="6" />
+    <Label GridLayout.Row="3" GridLayout.Column="1" HorizontalOptions="Start" Text="{Binding Carbohydrates, Converter={StaticResource OutConv}}}" Padding="6" />
+
+    <Label GridLayout.Row="4" GridLayout.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Sugar" Padding="6" />
+    <Label GridLayout.Row="4" GridLayout.Column="1" HorizontalOptions="Start" Text="{Binding Sugar, Converter={StaticResource OutConv}}" Padding="6" />
+
+    <Label GridLayout.Row="5" GridLayout.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Fat" Padding="6" />
+    <Label GridLayout.Row="5" GridLayout.Column="1" HorizontalOptions="Start" Text="{Binding Fat, Converter={StaticResource OutConv}}" Padding="6" />
+
+    <Label GridLayout.Row="6" GridLayout.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Proteins" Padding="6" />
+    <Label GridLayout.Row="6" GridLayout.Column="1" HorizontalOptions="Start" Text="{Binding Proteins, Converter={StaticResource OutConv}}" Padding="6" />
+
+    <Label GridLayout.Row="7" GridLayout.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Fibre" Padding="6" />
+    <Label GridLayout.Row="7" GridLayout.Column="1" HorizontalOptions="Start" Text="{Binding Fibre, Converter={StaticResource OutConv}}" Padding="6" />
+
+</GridLayout>

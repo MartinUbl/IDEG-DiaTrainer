@@ -1,0 +1,13 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             NavigationPage.HasBackButton="True"
+             NavigationPage.HasNavigationBar="True"
+             Title="Meals"
+             x:Class="IDEG_DiaTrainer.Pages.Popups.MealPopup">
+    <StackLayout Orientation="Vertical">
+        <ScrollView Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <FlexLayout x:Name="FoodList" Direction="Row" AlignItems="Center" JustifyContent="SpaceEvenly" Wrap="Wrap"></FlexLayout>
+        </ScrollView>
+        <Button x:Name="ConfirmButton" Text="Select meal" HorizontalOptions="End" Clicked="ConfirmButton_Clicked" />
+    </StackLayout>
+</ContentPage>

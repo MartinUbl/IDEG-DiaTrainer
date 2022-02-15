@@ -1,0 +1,77 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IDEG_DiaTrainer.MainPage"
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False"
+             BackgroundColor="{DynamicResource SecondaryColor}">
+
+    <ScrollView VerticalOptions="CenterAndExpand">
+        <Grid RowSpacing="25" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
+              Padding="{OnPlatform iOS='30,60,30,30', Default='30'}">
+
+            <Image
+                Source="appicon.png"
+                Grid.Row="0"
+                HorizontalOptions="Center"
+                WidthRequest="64"
+                HeightRequest="64" />
+
+            <Label 
+                Text="DiaTrainer"
+                Grid.Row="1"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+            <Label 
+                Text="Welcome to DiaTrainer, an application for use in diabetes education"
+                Grid.Row="2"
+                SemanticProperties.HeadingLevel="Level1"
+                SemanticProperties.Description="Welcome to DiaTrainer"
+                FontSize="18"
+                HorizontalTextAlignment="Center"
+                HorizontalOptions="Center" />
+
+            <Label 
+                Text="Choose the application mode"
+                Grid.Row="3"
+                SemanticProperties.HeadingLevel="Level1"
+                SemanticProperties.Description="Application mode"
+                FontSize="18"
+                HorizontalOptions="CenterAndExpand" />
+
+            <StackLayout Orientation="Vertical" Grid.Row="4" HorizontalOptions="CenterAndExpand" Spacing="15">
+                <Button 
+                    Text="Scenario mode"
+                    FontAttributes="Bold"
+                    SemanticProperties.Hint=""
+                    Clicked="OnScenarioClicked"
+                    WidthRequest="250"
+                    />
+
+                <Button 
+                    Text="Free-running mode"
+                    FontAttributes="Bold"
+                    SemanticProperties.Hint=""
+                    Clicked="OnFreeRunningClicked"
+                    />
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" Grid.Row="5" HorizontalOptions="CenterAndExpand">
+                <Label 
+                    Text="Powered by SmartCGMS"
+                    SemanticProperties.HeadingLevel="Level1"
+                    SemanticProperties.Description="Powered by SmartCGMS"
+                    FontSize="12"
+                    HorizontalOptions="Center" />
+                <Label 
+                    Text="Version 0.1-dev"
+                    SemanticProperties.HeadingLevel="Level1"
+                    SemanticProperties.Description="Powered by SmartCGMS"
+                    FontSize="10"
+                    HorizontalOptions="Center" />
+            </StackLayout>
+
+        </Grid>
+    </ScrollView>
+</ContentPage>
