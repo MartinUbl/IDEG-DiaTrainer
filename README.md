@@ -1,6 +1,7 @@
 # DiaTrainer
 
 DiaTrainer is an educational software for use in diabetes treatment education. It is build on top of a powerful [SmartCGMS](https://diabetes.zcu.cz/smartcgms) architecture.
+![SmartCGMS Logo](Misc/SmartCGMS-small.png?raw=true)
 
 ##  SmartCGMS disclaimer
 
@@ -15,3 +16,8 @@ This project is supported by an internal grant programme IDEG (grant ident. IDEG
 The DiaTrainer software and its components are distributed under MIT license. See attached LICENSE file for full licencing information.
 
 The SmartCGMS software architecture and its components are distributed under a GPLv3 license. Detailed licensing information could be found on the [official website](https://diabetes.zcu.cz/smartcgms).
+
+
+
+|![University of West Bohemia](https://www.zcu.cz/en/assets/logo.svg)|![Department of Computer Science and Engineering](https://www.kiv.zcu.cz/site/documents/verejne/katedra/dokumenty/dcse-logo-barevne.png)|
+|--|--|
