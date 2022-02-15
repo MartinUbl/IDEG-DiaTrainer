@@ -1,6 +1,6 @@
 # DiaTrainer
 
-DiaTrainer is a educational software for use in diabetes treatment education. It is build on top of a powerful [SmartCGMS](https://diabetes.zcu.cz/smartcgms) architecture.
+DiaTrainer is an educational software for use in diabetes treatment education. It is build on top of a powerful [SmartCGMS](https://diabetes.zcu.cz/smartcgms) architecture.
 
 ##  SmartCGMS disclaimer
 
