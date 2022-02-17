@@ -11,26 +11,6 @@ using System.Threading.Tasks;
 
 namespace IDEG_DiaTrainer.Helpers
 {
-    /*
-    public class OutputConverter : IValueConverter
-    {
-        public double ValueMultiplier { get; set; } = 1.0;
-
-        public string Units { get; set; } = "g";
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            var invalue = (double?)value;
-            return invalue.HasValue ? invalue.Value * ValueMultiplier + " " + Units : "N/A";
-        }
-
-        public object ConvertBack(object value, Type targetTypes, object parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
-    }
-    */
-
     public class OutputConverter : IMultiValueConverter
     {
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
@@ -38,7 +18,7 @@ namespace IDEG_DiaTrainer.Helpers
             var invalue = (double?)value[0];
             var mul = (double)(value[1] != null ? value[1] : 1.0);
             var units = (string)(value[2] != null ? value[2] : "?");
-            return invalue.HasValue ? invalue.Value * mul + " " + units : "N/A";
+            return invalue.HasValue ? (int)(invalue.Value * mul) + " " + units : "N/A";
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
@@ -52,13 +32,52 @@ namespace IDEG_DiaTrainer.Helpers
         void FoodBlockTappedCallback(FoodBlock block);
     }
 
-    public partial class FoodBlock : GridLayout
+    public class FoodBlockViewModel : INotifyPropertyChanged
     {
-        public FoodManager.FoodRecord Record { get; set; }
+        private FoodManager.FoodRecord _Record = null;
+        public FoodManager.FoodRecord Record
+        {
+            get
+            {
+                return _Record;
+            }
+            set
+            {
+                _Record = value;
+                OnPropertyChanged("Record");
+            }
+        }
+
+        private double _BaseMultiplier = 1.0;
+        public double BaseMultiplier
+        {
+            get
+            {
+                return _BaseMultiplier;
+            }
+            set
+            {
+                _BaseMultiplier = value;
+                OnPropertyChanged("BaseMultiplier");
+            }
+        }
+
+        public string EnergyUnits { get; set; } = "kcal";
+        public string CarbUnits { get; set; } = "g";
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
+    public partial class FoodBlock : Grid, INotifyPropertyChanged
+    {
+        public FoodBlockViewModel Food { get; set; }
 
         public IFoodBlockParent BlockParent { get; set; }
-
-        public double BaseMultiplier { get; set; } = 1.0;
 
         private Boolean FullBlock { get; set; } = false;
 
@@ -76,6 +95,7 @@ namespace IDEG_DiaTrainer.Helpers
                     BackgroundColor = Color.FromRgba(192, 192, 224, 255);
                 else
                     BackgroundColor = KnownColor.Transparent;
+                OnPropertyChanged();
             }
         }
 
@@ -86,8 +106,8 @@ namespace IDEG_DiaTrainer.Helpers
 
         public FoodBlock(FoodManager.FoodRecord record, IFoodBlockParent parent, bool full)
         {
-            Record = record;
-            BindingContext = this;
+            Food = new FoodBlockViewModel { Record = record, BaseMultiplier = 1.0 };
+            BindingContext = Food;
             BlockParent = parent;
             FullBlock = full;
 
@@ -108,14 +128,9 @@ namespace IDEG_DiaTrainer.Helpers
 
         public void ChangeMultiplier(double mul)
         {
-            //BindingContext = null;
-            //OutGramsConv.ValueMultiplier = mul;
-            //OutJouleConv.ValueMultiplier = mul;
-            BaseMultiplier = mul;
-            RecountVar.Text = String.Format("for {0} {1} of meal", Record.BaseAmount*mul, Record.Units);
+            Food.BaseMultiplier = mul;
+            RecountVar.Text = String.Format("for {0} {1} of meal", (int)Math.Round(Food.Record.BaseAmount.Value * mul), Food.Record.Units);
             RecountVar.IsVisible = true;
-            //BindingContext = Record;
         }
-
     }
 }

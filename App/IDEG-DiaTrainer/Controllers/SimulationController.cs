@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Controls;
+﻿using IDEG_DiaTrainer.Messages;
+using Microsoft.Maui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace IDEG_DiaTrainer.Controllers
         static readonly ulong SimSegmentId = 1;
 
         long SimulationTimeCounter = 0;
+
+        private bool Paused = false;
 
         public SimulationController()
         {
@@ -37,8 +40,25 @@ namespace IDEG_DiaTrainer.Controllers
             }
         }
 
+        private void InjectLevelEvent(Guid signalId, double level, DateTime? when)
+        {
+            scgms.ScgmsEvent evt = new scgms.ScgmsEvent();
+            evt.eventCode = scgms.EventCode.Level;
+            evt.segmentId = SimSegmentId;
+            evt.signalId = signalId;
+            evt.level = level;
+            evt.deviceTime = when.HasValue ?
+                scgms.Utils.UnixTimeToRatTime((long)(when.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds)
+                :
+                scgms.Utils.UnixTimeToRatTime((long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds + 5 * 60 * SimulationTimeCounter + 1);
+            Exec.InjectEvent(evt);
+        }
+
         private bool TimerCallback()
         {
+            if (Paused)
+                return true;
+
             scgms.ScgmsEvent evt = new scgms.ScgmsEvent();
             evt.eventCode = scgms.EventCode.Level;
             evt.segmentId = SimSegmentId;
@@ -82,11 +102,43 @@ namespace IDEG_DiaTrainer.Controllers
             if (!draw.HasValue)
                 return false;
 
+            Paused = false;
+
             DrawingFilter = new scgms.DrawingFilterInspection(draw.Value);
 
             Device.StartTimer(TimeSpan.FromSeconds(1), TimerCallback);
 
+            MessagingCenter.Subscribe<InjectCarbsMessage>(this, InjectCarbsMessage.Name, ProcessInjectCarbsMessage);
+
             return true;
+        }
+
+        public void Pause()
+        {
+            if (Exec == null || Paused)
+                return;
+        }
+
+        public void Resume()
+        {
+            if (Exec == null || !Paused)
+                return;
+        }
+
+        public bool IsPaused()
+        {
+            return Paused;
+        }
+
+        public void ProcessInjectCarbsMessage(InjectCarbsMessage msg)
+        {
+            if (msg.CarbAmount <= 0)
+                return;
+
+            InjectLevelEvent(
+                msg.IsRescue ? scgms.SignalGuids.CarbRescue : scgms.SignalGuids.CarbIntake,
+                msg.CarbAmount,
+                msg.When);
         }
     }
 }

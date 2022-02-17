@@ -28,7 +28,7 @@ namespace IDEG_DiaTrainer.Pages.Popups
         {
             if (SelectedBlock != null)
             {
-                await Navigation.PushAsync(new MealConfirmPopup(SelectedBlock.Record));
+                await Navigation.PushAsync(new MealConfirmPopup(SelectedBlock.Food.Record));
             }
             else
             {

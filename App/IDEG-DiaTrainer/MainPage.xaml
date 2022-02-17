@@ -13,6 +13,7 @@
                 Source="appicon.png"
                 Grid.Row="0"
                 HorizontalOptions="Center"
+                InputTransparent="True"
                 WidthRequest="64"
                 HeightRequest="64" />
 

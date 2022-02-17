@@ -6,10 +6,10 @@
              Title="Simulation"
              x:Class="IDEG_DiaTrainer.Pages.SimulationPage">
 
-    <GridLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" ColumnDefinitions="72,1*" RowDefinitions="2*,1*,1*,1*" ColumnSpacing="16"
+    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" ColumnDefinitions="72,1*" RowDefinitions="2*,1*,1*,1*" ColumnSpacing="16"
                 Padding="{OnPlatform iOS='30,60,30,30', Default='10,10,10,60'}">
 
-        <StackLayout Orientation="Vertical" GridLayout.Row="0" GridLayout.Column="0" GridLayout.RowSpan="3" VerticalOptions="FillAndExpand">
+        <StackLayout Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" VerticalOptions="FillAndExpand">
             <Image Source="fastfood.png" Style="{StaticResource ImgButtonUI}">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="MealButton_Clicked"></TapGestureRecognizer>
@@ -23,37 +23,37 @@
             </Image>
         </StackLayout>
 
-        <StackLayout Orientation="Vertical" GridLayout.Row="4" GridLayout.Column="0" GridLayout.RowSpan="3" VerticalOptions="End">
+        <StackLayout Orientation="Vertical" Grid.Row="4" Grid.Column="0" Grid.RowSpan="3" VerticalOptions="End">
             <Image Source="exit.png" Style="{StaticResource ImgButtonUI}" VerticalOptions="End">
             </Image>
         </StackLayout>
 
-        <views:SKCanvasView x:Name="SVGView_Glucose" VerticalOptions="FillAndExpand" GridLayout.Row="0" GridLayout.Column="1" HorizontalOptions="FillAndExpand" PaintSurface="OnGraphPaint_Glucose" Margin="0,0,0,10" />
-        <views:SKCanvasView x:Name="SVGView_Insulin" VerticalOptions="FillAndExpand" GridLayout.Row="1" GridLayout.Column="1" HorizontalOptions="FillAndExpand" PaintSurface="OnGraphPaint_Insulin" Margin="0,0,0,10" />
-        <views:SKCanvasView x:Name="SVGView_Carbs" VerticalOptions="FillAndExpand" GridLayout.Row="2" GridLayout.Column="1" HorizontalOptions="FillAndExpand" PaintSurface="OnGraphPaint_Carbs" Margin="0,0,0,10" />
+        <views:SKCanvasView x:Name="SVGView_Glucose" VerticalOptions="FillAndExpand" Grid.Row="0" Grid.Column="1" HorizontalOptions="FillAndExpand" PaintSurface="OnGraphPaint_Glucose" Margin="0,0,0,10" />
+        <views:SKCanvasView x:Name="SVGView_Insulin" VerticalOptions="FillAndExpand" Grid.Row="1" Grid.Column="1" HorizontalOptions="FillAndExpand" PaintSurface="OnGraphPaint_Insulin" Margin="0,0,0,10" />
+        <views:SKCanvasView x:Name="SVGView_Carbs" VerticalOptions="FillAndExpand" Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" PaintSurface="OnGraphPaint_Carbs" Margin="0,0,0,10" />
 
-        <GridLayout GridLayout.Row="4" GridLayout.Column="1" RowDefinitions="1*,1*,1*,1*" ColumnDefinitions="1*,1*,1*,1*">
+        <Grid Grid.Row="4" Grid.Column="1" RowDefinitions="1*,1*,1*,1*" ColumnDefinitions="1*,1*,1*,1*">
 
-            <Label Text="Current glucose" GridLayout.Row="0" GridLayout.Column="0" />
-            <StackLayout Orientation="Horizontal" GridLayout.Row="1" GridLayout.Column="0" Padding="0,0,0,15" VerticalOptions="FillAndExpand">
+            <Label Text="Current glucose" Grid.Row="0" Grid.Column="0" />
+            <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Padding="0,0,0,15" VerticalOptions="FillAndExpand">
                 <Label x:Name="GlucoseLabel" Text="0.0" FontSize="Large" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" />
                 <Label Text="mmol/L" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" Padding="10,15,0,0" />
             </StackLayout>
 
-            <Label Text="Current insulin on board" GridLayout.Row="2" GridLayout.Column="0" />
-            <StackLayout Orientation="Horizontal" GridLayout.Row="3" GridLayout.Column="0" Padding="0,0,0,15" VerticalOptions="FillAndExpand">
+            <Label Text="Current insulin on board" Grid.Row="2" Grid.Column="0" />
+            <StackLayout Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Padding="0,0,0,15" VerticalOptions="FillAndExpand">
                 <Label x:Name="IOBLabel" Text="0.0" FontSize="Large" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" />
                 <Label Text="U" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" Padding="10,15,0,0" />
             </StackLayout>
 
-            <Label Text="Current carbohydrates on board" GridLayout.Row="0" GridLayout.Column="1" />
-            <StackLayout Orientation="Horizontal" GridLayout.Row="1" GridLayout.Column="1" Padding="0,0,0,15" VerticalOptions="FillAndExpand">
+            <Label Text="Current carbohydrates on board" Grid.Row="0" Grid.Column="1" />
+            <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Padding="0,0,0,15" VerticalOptions="FillAndExpand">
                 <Label x:Name="COBLabel" Text="0.0" FontSize="Large" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" />
                 <Label Text="g" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" Padding="10,15,0,0" />
             </StackLayout>
 
-        </GridLayout>
+        </Grid>
 
-    </GridLayout>
+    </Grid>
 
 </ContentPage>

@@ -5,7 +5,7 @@
              NavigationPage.HasNavigationBar="True"
              x:Class="IDEG_DiaTrainer.Pages.Popups.MealConfirmPopup">
     <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-        <StackLayout Orientation="Horizontal" x:Name="TargetLayout">
+        <StackLayout Orientation="Horizontal" x:Name="TargetLayout" VerticalOptions="FillAndExpand">
             <!-- placeholder for food block -->
             <StackLayout Orientation="Vertical">
                 <StackLayout Orientation="Horizontal" Spacing="16">
@@ -13,7 +13,7 @@
                     <Button Text="{Binding Units, StringFormat='-10 {0}'}" Style="{StaticResource BtnModifyPortion}" CommandParameter="-10" Clicked="ModifyPortionButton_Clicked" />
                     <Button Text="{Binding Units, StringFormat='-5 {0}'}" Style="{StaticResource BtnModifyPortion}" CommandParameter="-5" Clicked="ModifyPortionButton_Clicked" />
 
-                    <Entry x:Name="AmountEntry" Keyboard="Numeric" TextChanged="AmountEntry_TextChanged" Text="{Binding BaseAmount}" WidthRequest="64" />
+                    <Entry x:Name="AmountEntry" Keyboard="Numeric" TextChanged="AmountEntry_TextChanged" Text="" WidthRequest="64" />
                     <Label Text="{Binding Units}" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" />
 
                     <Button Text="{Binding Units, StringFormat='+5 {0}'}" Style="{StaticResource BtnModifyPortion}" CommandParameter="5" Clicked="ModifyPortionButton_Clicked" />

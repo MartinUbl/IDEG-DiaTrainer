@@ -19,7 +19,7 @@
                 SemanticProperties.Description="Patient selection"
                 FontSize="18"
                 Grid.Row="0"
-                GridLayout.Column="0" GridLayout.ColumnSpan="2"
+                Grid.Column="0" Grid.ColumnSpan="2"
                 VerticalOptions="FillAndExpand"
                 HorizontalTextAlignment="Center"
                 HorizontalOptions="FillAndExpand" />

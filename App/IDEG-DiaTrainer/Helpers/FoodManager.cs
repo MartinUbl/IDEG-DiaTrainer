@@ -19,7 +19,12 @@ namespace IDEG_DiaTrainer.Helpers
 
             public string ImageFilename { get; set; }
 
-            public double? BaseAmount { get; set; }
+            private double? _BaseAmount;
+            public double? BaseAmount { get { return _BaseAmount; } set
+                {
+                    _BaseAmount = value;
+                }
+            }
 
             public double? PortionAmount { get; set; }
 

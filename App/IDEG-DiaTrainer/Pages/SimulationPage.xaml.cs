@@ -127,7 +127,7 @@ namespace IDEG_DiaTrainer.Pages
             /*
             var newWindow = new Window
             {
-                Page = new Popups.MealPopup()
+                Page = new Popups.MealPopup(foodManager)
             };
             Application.Current.OpenWindow(newWindow);
             */

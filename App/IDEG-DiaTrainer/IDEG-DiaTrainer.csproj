@@ -73,6 +73,7 @@
 	  <None Remove="Platforms\Windows\lib\x64\game-wrapper.dll" />
 	  <None Remove="Platforms\Windows\lib\x64\interop-inspector.dll" />
 	  <None Remove="Platforms\Windows\lib\x64\scgms.dll" />
+	  <None Remove="Resources\appicon.png" />
 	  <None Remove="Resources\Content\Food\food.csv" />
 	  <None Remove="Resources\Content\Food\img\banan.jpg" />
 	  <None Remove="Resources\Content\Food\img\bolonske-spagety.jpg" />
@@ -148,10 +149,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="..\..\..\gpredict3\desktop\src\resource\app\appicon.png">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
+	  <MauiImage Include="Resources\appicon.png" />
 	</ItemGroup>
 
 	<ItemGroup>

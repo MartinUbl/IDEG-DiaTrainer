@@ -1,36 +1,36 @@
-﻿<GridLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
       xmlns:f="clr-namespace:IDEG_DiaTrainer.Helpers"
       x:Class="IDEG_DiaTrainer.Helpers.FoodBlock"
       Padding="16">
 
-    <GridLayout.Resources>
+    <Grid.Resources>
         <f:OutputConverter x:Key="OutConv" x:Name="OutConv" />
-    </GridLayout.Resources>
+    </Grid.Resources>
 
-    <GridLayout.GestureRecognizers>
+    <Grid.GestureRecognizers>
         <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
-    </GridLayout.GestureRecognizers>
+    </Grid.GestureRecognizers>
 
-    <GridLayout.ColumnDefinitions>
+    <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" />
-    </GridLayout.ColumnDefinitions>
-    <GridLayout.RowDefinitions>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
-    </GridLayout.RowDefinitions>
+    </Grid.RowDefinitions>
 
-    <Image GridLayout.Row="0" GridLayout.Column="0" HorizontalOptions="CenterAndExpand" WidthRequest="192" HeightRequest="192" Aspect="AspectFit" x:Name="FoodImage" />
-    <Label GridLayout.Row="1" GridLayout.Column="0" HorizontalOptions="Center" LineBreakMode="WordWrap" FontAttributes="Bold" FontSize="Subtitle" Text="{Binding Record.Name}" />
+    <Image Grid.Row="0" Grid.Column="0" HorizontalOptions="CenterAndExpand" WidthRequest="192" HeightRequest="192" Aspect="AspectFit" x:Name="FoodImage" />
+    <Label Grid.Row="1" Grid.Column="0" HorizontalOptions="Center" LineBreakMode="WordWrap" FontAttributes="Bold" FontSize="Subtitle" Text="{Binding Record.Name}" />
 
-    <GridLayout GridLayout.Row="2" GridLayout.Column="0" IsVisible="false" x:Name="DetailsGrid">
+    <Grid Grid.Row="2" Grid.Column="0" IsVisible="false" x:Name="DetailsGrid">
 
-        <GridLayout.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
-        </GridLayout.ColumnDefinitions>
-        <GridLayout.RowDefinitions>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -38,76 +38,76 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-        </GridLayout.RowDefinitions>
+        </Grid.RowDefinitions>
 
-        <Label GridLayout.Row="0" GridLayout.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Calories" Padding="6" />
-        <Label GridLayout.Row="0" GridLayout.Column="1" HorizontalOptions="Start" Padding="6">
+        <Label Grid.Row="0" Grid.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Calories" Padding="6" />
+        <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="Start" Padding="6">
             <Label.Text>
                 <MultiBinding Converter="{StaticResource OutConv}">
                     <Binding Path="Record.Calories" />
                     <Binding Path="BaseMultiplier" />
-                    <Binding Path="Record.Units" />
+                    <Binding Path="EnergyUnits" />
                 </MultiBinding>
             </Label.Text>
         </Label>
         
-        <Label GridLayout.Row="1" GridLayout.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Carbohydrates" Padding="6" />
-        <Label GridLayout.Row="1" GridLayout.Column="1" HorizontalOptions="Start" Padding="6">
+        <Label Grid.Row="1" Grid.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Carbohydrates" Padding="6" />
+        <Label Grid.Row="1" Grid.Column="1" HorizontalOptions="Start" Padding="6">
             <Label.Text>
                 <MultiBinding Converter="{StaticResource OutConv}">
                     <Binding Path="Record.Carbohydrates" />
                     <Binding Path="BaseMultiplier" />
-                    <Binding Path="Record.Units" />
+                    <Binding Path="CarbUnits" />
                 </MultiBinding>
             </Label.Text>
         </Label>
 
-        <Label GridLayout.Row="2" GridLayout.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Sugar" Padding="6" />
-        <Label GridLayout.Row="2" GridLayout.Column="1" HorizontalOptions="Start" Padding="6">
+        <Label Grid.Row="2" Grid.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Sugar" Padding="6" />
+        <Label Grid.Row="2" Grid.Column="1" HorizontalOptions="Start" Padding="6">
             <Label.Text>
                 <MultiBinding Converter="{StaticResource OutConv}">
                     <Binding Path="Record.Sugar" />
                     <Binding Path="BaseMultiplier" />
-                    <Binding Path="Record.Units" />
+                    <Binding Path="CarbUnits" />
                 </MultiBinding>
             </Label.Text>
         </Label>
 
-        <Label GridLayout.Row="3" GridLayout.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Fat" Padding="6" />
-        <Label GridLayout.Row="3" GridLayout.Column="1" HorizontalOptions="Start" Padding="6">
+        <Label Grid.Row="3" Grid.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Fat" Padding="6" />
+        <Label Grid.Row="3" Grid.Column="1" HorizontalOptions="Start" Padding="6">
             <Label.Text>
                 <MultiBinding Converter="{StaticResource OutConv}">
                     <Binding Path="Record.Fat" />
                     <Binding Path="BaseMultiplier" />
-                    <Binding Path="Record.Units" />
+                    <Binding Path="CarbUnits" />
                 </MultiBinding>
             </Label.Text>
         </Label>
 
-        <Label GridLayout.Row="4" GridLayout.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Proteins" Padding="6" />
-        <Label GridLayout.Row="4" GridLayout.Column="1" HorizontalOptions="Start" Padding="6">
+        <Label Grid.Row="4" Grid.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Proteins" Padding="6" />
+        <Label Grid.Row="4" Grid.Column="1" HorizontalOptions="Start" Padding="6">
             <Label.Text>
                 <MultiBinding Converter="{StaticResource OutConv}">
                     <Binding Path="Record.Proteins" />
                     <Binding Path="BaseMultiplier" />
-                    <Binding Path="Record.Units" />
+                    <Binding Path="CarbUnits" />
                 </MultiBinding>
             </Label.Text>
         </Label>
 
-        <Label GridLayout.Row="5" GridLayout.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Fibre" Padding="6" />
-        <Label GridLayout.Row="5" GridLayout.Column="1" HorizontalOptions="Start" Padding="6">
+        <Label Grid.Row="5" Grid.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Fibre" Padding="6" />
+        <Label Grid.Row="5" Grid.Column="1" HorizontalOptions="Start" Padding="6">
             <Label.Text>
                 <MultiBinding Converter="{StaticResource OutConv}">
                     <Binding Path="Record.Fibre" />
                     <Binding Path="BaseMultiplier" />
-                    <Binding Path="Record.Units" />
+                    <Binding Path="CarbUnits" />
                 </MultiBinding>
             </Label.Text>
         </Label>
 
-        <Label x:Name="RecountVar" GridLayout.Row="6" GridLayout.Column="0" GridLayout.ColumnSpan="2" HorizontalOptions="CenterAndExpand" FontSize="Micro" Text="" />
+        <Label x:Name="RecountVar" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="CenterAndExpand" FontSize="Micro" Text="" />
 
-    </GridLayout>
+    </Grid>
 
-</GridLayout>
+</Grid>
