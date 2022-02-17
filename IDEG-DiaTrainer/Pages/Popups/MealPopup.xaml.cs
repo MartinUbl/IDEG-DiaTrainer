@@ -21,9 +21,7 @@ namespace IDEG_DiaTrainer.Pages.Popups
 
             var recs = foodManager.GetFood();
             foreach (var r in recs)
-            {
-                FoodList.Children.Add(new Helpers.FoodBlock(r, this));
-            }
+                FoodList.Children.Add(new Helpers.FoodBlock(r, this, false));
         }
 
         private async void ConfirmButton_Clicked(object sender, EventArgs e)

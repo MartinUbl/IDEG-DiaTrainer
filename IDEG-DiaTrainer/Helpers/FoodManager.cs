@@ -19,6 +19,10 @@ namespace IDEG_DiaTrainer.Helpers
 
             public string ImageFilename { get; set; }
 
+            public double? BaseAmount { get; set; }
+
+            public double? PortionAmount { get; set; }
+
             public string Units { get; set; }
 
             public double? Calories { get; set; }
@@ -75,7 +79,7 @@ namespace IDEG_DiaTrainer.Helpers
                         csv.Read();
                         csv.ReadHeader();
 
-                        //id;name;img;unit;calories;carbohydrates;sugar;fat;proteins;fibre
+                        //id;name;img;baseamount;portionamount;unit;calories;carbohydrates;sugar;fat;proteins;fibre
 
                         while (csv.Read())
                         {
@@ -84,6 +88,8 @@ namespace IDEG_DiaTrainer.Helpers
                                 Identifier = csv.GetField("id"),
                                 Name = csv.GetField("name"),
                                 ImageFilename = csv.GetField("img"),
+                                BaseAmount = csv.GetField<double>("baseamount"),
+                                PortionAmount = csv.GetField<double>("portionamount"),
                                 Units = csv.GetField("unit"),
 
                                 Calories = ReadNull(csv, "calories"),

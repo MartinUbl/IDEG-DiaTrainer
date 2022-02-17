@@ -1,4 +1,4 @@
-id;name;img;unit;calories;carbohydrates;sugar;fat;proteins;fibre
-banan;banán;banan.jpg;g;94;22;19;;1;2
-bolonske-spagety;boloňské špagety;bolonske-spagety.jpg;g;157;20;2;5;8;
-tatranka-coko-liskooriskova-opavia;Tatranka čoko lískooříšková Opavia;tatranka-coko-liskooriskova-opavia.jpg;g;537;57;39;30;7;3
+id;name;img;baseamount;portionamount;unit;calories;carbohydrates;sugar;fat;proteins;fibre
+banan;banán;banan.jpg;100;100;g;94;22;19;;1;2
+bolonske-spagety;boloňské špagety;bolonske-spagety.jpg;100;100;g;157;20;2;5;8;
+tatranka-coko-liskooriskova-opavia;Tatranka čoko lískooříšková Opavia;tatranka-coko-liskooriskova-opavia.jpg;100;100;g;537;57;39;30;7;3

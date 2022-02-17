@@ -11,13 +11,17 @@ namespace IDEG_DiaTrainer.Pages.Popups
     {
         private Helpers.FoodManager.FoodRecord Food { get; set; }
 
+        private Helpers.FoodBlock MealBlock;
+
         public MealConfirmPopup(Helpers.FoodManager.FoodRecord food)
         {
             Food = food;
+            BindingContext = Food;
 
             InitializeComponent();
 
-            TargetLayout.Children.Insert(0, new Helpers.FoodBlock(food, this));
+            MealBlock = new Helpers.FoodBlock(food, this, true);
+            TargetLayout.Children.Insert(0, MealBlock);
         }
 
         private async void ConfirmButton_Clicked(object sender, EventArgs e)
@@ -35,6 +39,22 @@ namespace IDEG_DiaTrainer.Pages.Popups
         public void FoodBlockTappedCallback(Helpers.FoodBlock block)
         {
             //
+        }
+
+        private void AmountEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double result = 0;
+            if (Double.TryParse(e.NewTextValue, out result) && MealBlock != null)
+            {
+                MealBlock.ChangeMultiplier(result / Food.BaseAmount.Value);
+            }
+        }
+
+        private void ModifyPortionButton_Clicked(object sender, EventArgs e)
+        {
+            double result = 0;
+            if (Double.TryParse(AmountEntry.Text, out result))
+                AmountEntry.Text = (result + Double.Parse((string)(((Button)sender).CommandParameter))).ToString();
         }
     }
 }
