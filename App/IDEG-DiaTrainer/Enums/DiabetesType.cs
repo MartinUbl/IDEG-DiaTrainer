@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace IDEG_DiaTrainer.Enums
 {
-    public class DiabetesType
+    /// <summary>
+    /// Enumerator of known diabetes types
+    /// </summary>
+    public enum DiabetesType
     {
-        public static readonly string DiabetesType1 = "Diabetes type 1 (T1D)";
-        public static readonly string DiabetesType2 = "Diabetes type 2 (T2D)";
+        Type1,
+        Type2,
     }
 }

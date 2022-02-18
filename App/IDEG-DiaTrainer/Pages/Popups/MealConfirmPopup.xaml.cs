@@ -8,39 +8,47 @@ using Microsoft.Maui.Graphics;
 
 namespace IDEG_DiaTrainer.Pages.Popups
 {
+    /// <summary>
+    /// Popup page for confirming meal selection and adjusting portion
+    /// </summary>
     public partial class MealConfirmPopup : ContentPage, Helpers.IFoodBlockParent
     {
-        private Helpers.FoodManager.FoodRecord Food { get; set; }
+        // food record of seleted meal
+        private Helpers.FoodRecord Food { get; set; }
 
-        public double CurrentPortionSize { get; set; }
-
+        // encapsulated food block
         private Helpers.FoodBlock MealBlock;
 
-        public MealConfirmPopup(Helpers.FoodManager.FoodRecord food)
+        // stores multiplier after each change
+        private double StoredMultiplier = 1.0;
+
+        public MealConfirmPopup(Helpers.FoodRecord food)
         {
             Food = food;
             BindingContext = Food;
 
             InitializeComponent();
 
-            AmountEntry.Text = food.BaseAmount.ToString();
-
+            // insert meal block into layout
             MealBlock = new Helpers.FoodBlock(food, this, true);
             TargetLayout.Children.Insert(0, MealBlock);
         }
 
         private async void ConfirmButton_Clicked(object sender, EventArgs e)
         {
+            // this is here basically to just validate the inputs
             double result = 0;
             if (Double.TryParse(AmountEntry.Text, out result) && result > 0 && result < 10000)
             {
+                // broadcast meal selection
                 MessagingCenter.Send<InjectCarbsMessage>(new InjectCarbsMessage { 
-                    CarbAmount = Food.Carbohydrates.HasValue ? Food.Carbohydrates.Value : 0,
+                    CarbAmount = Food.Carbohydrates.HasValue ? Food.Carbohydrates.Value * StoredMultiplier : 0,
                     When = null,
                     IsRescue = false
                 }, InjectCarbsMessage.Name);
 
                 // this causes the previous page to be popped as well (so we return to simulation)
+                // TODO: make this a bit more generic
                 Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                 await Navigation.PopAsync();
             }
@@ -57,21 +65,21 @@ namespace IDEG_DiaTrainer.Pages.Popups
 
         private void AmountEntry_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // parse the amount, set multiplier and propagate it 
             double result = 0;
             if (Double.TryParse(e.NewTextValue, out result) && MealBlock != null)
             {
-                double mul = result / Food.BaseAmount.Value;
-                MealBlock.ChangeMultiplier(mul);
+                StoredMultiplier = result / Food.BaseAmount.Value;
+                MealBlock.ChangeMultiplier(StoredMultiplier);
             }
         }
 
         private void ModifyPortionButton_Clicked(object sender, EventArgs e)
         {
+            // propagate the change to amountentry
             double res = 0;
             if (Double.TryParse(AmountEntry.Text, out res))
-            {
                 AmountEntry.Text = (res + Double.Parse((string)(((Button)sender).CommandParameter))).ToString();
-            }
         }
     }
 }

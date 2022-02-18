@@ -1,11 +1,11 @@
 ﻿<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-      xmlns:f="clr-namespace:IDEG_DiaTrainer.Helpers"
+      xmlns:local="clr-namespace:IDEG_DiaTrainer.Helpers.Converters"
       x:Class="IDEG_DiaTrainer.Helpers.FoodBlock"
       Padding="16">
 
     <Grid.Resources>
-        <f:OutputConverter x:Key="OutConv" x:Name="OutConv" />
+        <local:MealParameterConverter x:Key="OutConv" x:Name="OutConv" />
     </Grid.Resources>
 
     <Grid.GestureRecognizers>
@@ -43,10 +43,9 @@
         <Label Grid.Row="0" Grid.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Calories" Padding="6" />
         <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="Start" Padding="6">
             <Label.Text>
-                <MultiBinding Converter="{StaticResource OutConv}">
+                <MultiBinding Converter="{StaticResource OutConv}" ConverterParameter="kJ">
                     <Binding Path="Record.Calories" />
                     <Binding Path="BaseMultiplier" />
-                    <Binding Path="EnergyUnits" />
                 </MultiBinding>
             </Label.Text>
         </Label>
@@ -54,10 +53,9 @@
         <Label Grid.Row="1" Grid.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Carbohydrates" Padding="6" />
         <Label Grid.Row="1" Grid.Column="1" HorizontalOptions="Start" Padding="6">
             <Label.Text>
-                <MultiBinding Converter="{StaticResource OutConv}">
+                <MultiBinding Converter="{StaticResource OutConv}" ConverterParameter="g">
                     <Binding Path="Record.Carbohydrates" />
                     <Binding Path="BaseMultiplier" />
-                    <Binding Path="CarbUnits" />
                 </MultiBinding>
             </Label.Text>
         </Label>
@@ -65,10 +63,9 @@
         <Label Grid.Row="2" Grid.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Sugar" Padding="6" />
         <Label Grid.Row="2" Grid.Column="1" HorizontalOptions="Start" Padding="6">
             <Label.Text>
-                <MultiBinding Converter="{StaticResource OutConv}">
+                <MultiBinding Converter="{StaticResource OutConv}" ConverterParameter="g">
                     <Binding Path="Record.Sugar" />
                     <Binding Path="BaseMultiplier" />
-                    <Binding Path="CarbUnits" />
                 </MultiBinding>
             </Label.Text>
         </Label>
@@ -76,10 +73,9 @@
         <Label Grid.Row="3" Grid.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Fat" Padding="6" />
         <Label Grid.Row="3" Grid.Column="1" HorizontalOptions="Start" Padding="6">
             <Label.Text>
-                <MultiBinding Converter="{StaticResource OutConv}">
+                <MultiBinding Converter="{StaticResource OutConv}" ConverterParameter="g">
                     <Binding Path="Record.Fat" />
                     <Binding Path="BaseMultiplier" />
-                    <Binding Path="CarbUnits" />
                 </MultiBinding>
             </Label.Text>
         </Label>
@@ -87,10 +83,9 @@
         <Label Grid.Row="4" Grid.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Proteins" Padding="6" />
         <Label Grid.Row="4" Grid.Column="1" HorizontalOptions="Start" Padding="6">
             <Label.Text>
-                <MultiBinding Converter="{StaticResource OutConv}">
+                <MultiBinding Converter="{StaticResource OutConv}" ConverterParameter="g">
                     <Binding Path="Record.Proteins" />
                     <Binding Path="BaseMultiplier" />
-                    <Binding Path="CarbUnits" />
                 </MultiBinding>
             </Label.Text>
         </Label>
@@ -98,10 +93,9 @@
         <Label Grid.Row="5" Grid.Column="0" HorizontalOptions="End" FontAttributes="Bold" Text="Fibre" Padding="6" />
         <Label Grid.Row="5" Grid.Column="1" HorizontalOptions="Start" Padding="6">
             <Label.Text>
-                <MultiBinding Converter="{StaticResource OutConv}">
+                <MultiBinding Converter="{StaticResource OutConv}" ConverterParameter="g">
                     <Binding Path="Record.Fibre" />
                     <Binding Path="BaseMultiplier" />
-                    <Binding Path="CarbUnits" />
                 </MultiBinding>
             </Label.Text>
         </Label>

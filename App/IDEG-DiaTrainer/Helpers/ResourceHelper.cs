@@ -8,8 +8,16 @@ using System.Threading.Tasks;
 
 namespace IDEG_DiaTrainer.Helpers
 {
+    /// <summary>
+    /// Utility class for resource management
+    /// </summary>
     public class ResourceHelper
     {
+        /// <summary>
+        /// Retrieves a stream for a given resource
+        /// </summary>
+        /// <param name="name">full path to resource</param>
+        /// <returns>stream of given resource</returns>
         public static Stream GetNamedStream(string name)
         {
             try
@@ -27,6 +35,11 @@ namespace IDEG_DiaTrainer.Helpers
             return null;
         }
 
+        /// <summary>
+        /// Retrieves a streamreader for a given resource
+        /// </summary>
+        /// <param name="name">full path to resource</param>
+        /// <returns>streamreader of a given resource</returns>
         public static StreamReader GetNamedReader(string name)
         {
             try
@@ -47,6 +60,11 @@ namespace IDEG_DiaTrainer.Helpers
             return null;
         }
 
+        /// <summary>
+        /// Reads all contents of a given resource into a string
+        /// </summary>
+        /// <param name="name">full path to resource</param>
+        /// <returns>resource contents in a string</returns>
         public static string ReadNamedResource(string name)
         {
             string text = "";

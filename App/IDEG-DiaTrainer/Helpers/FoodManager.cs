@@ -9,40 +9,12 @@ using System.Threading.Tasks;
 
 namespace IDEG_DiaTrainer.Helpers
 {
+    /// <summary>
+    /// Food manager class - loads available food from resources
+    /// </summary>
     public class FoodManager
     {
-        public class FoodRecord
-        {
-            public string Identifier { get; set; }
-            
-            public string Name { get; set; }
-
-            public string ImageFilename { get; set; }
-
-            private double? _BaseAmount;
-            public double? BaseAmount { get { return _BaseAmount; } set
-                {
-                    _BaseAmount = value;
-                }
-            }
-
-            public double? PortionAmount { get; set; }
-
-            public string Units { get; set; }
-
-            public double? Calories { get; set; }
-
-            public double? Carbohydrates { get; set; }
-
-            public double? Sugar { get; set; }
-
-            public double? Fat { get; set; }
-
-            public double? Proteins { get; set; }
-
-            public double? Fibre { get; set; }
-        }
-
+        // list of all loaded records
         private List<FoodRecord> Records;
 
         public FoodManager()
@@ -50,6 +22,13 @@ namespace IDEG_DiaTrainer.Helpers
             //
         }
 
+        /// <summary>
+        /// guarded read from CSV file
+        /// </summary>
+        /// <param name="csv">given reader</param>
+        /// <param name="name">field name</param>
+        /// <returns>content of the field</returns>
+        /// <returns>null if the field does not contain double</returns>
         private double? ReadNull(CsvReader csv, string name)
         {
             try
@@ -64,30 +43,44 @@ namespace IDEG_DiaTrainer.Helpers
             return null;
         }
 
+        /// <summary>
+        /// Retrieves all loaded food
+        /// </summary>
+        /// <returns>loaded food records</returns>
         public List<FoodRecord> GetFood()
         {
             return Records;
         }
 
+        /// <summary>
+        /// Loads all available food from internal resource stream
+        /// </summary>
+        /// <returns></returns>
         public bool Load()
         {
             try
             {
+                // get resource stream
                 using (var reader = ResourceHelper.GetNamedReader("IDEG_DiaTrainer.Resources.Content.Food.food.csv"))
                 {
+                    // we use semicolon separator and UTF-8 encoding for the csv file
                     var config = new CsvConfiguration(CultureInfo.InvariantCulture) { Delimiter = ";", Encoding = Encoding.UTF8 };
 
+                    // read all contents
                     using (var csv = new CsvReader(reader, config))
                     {
                         Records = new List<FoodRecord>();
 
+                        // read header - Read + ReadHeader is used as instructed in CsvReader manual
                         csv.Read();
                         csv.ReadHeader();
 
                         //id;name;img;baseamount;portionamount;unit;calories;carbohydrates;sugar;fat;proteins;fibre
 
+                        // read all records
                         while (csv.Read())
                         {
+                            // try to create FoodRecords from all lines
                             var record = new FoodRecord
                             {
                                 Identifier = csv.GetField("id"),

@@ -13,7 +13,7 @@
                     <Button Text="{Binding Units, StringFormat='-10 {0}'}" Style="{StaticResource BtnModifyPortion}" CommandParameter="-10" Clicked="ModifyPortionButton_Clicked" />
                     <Button Text="{Binding Units, StringFormat='-5 {0}'}" Style="{StaticResource BtnModifyPortion}" CommandParameter="-5" Clicked="ModifyPortionButton_Clicked" />
 
-                    <Entry x:Name="AmountEntry" Keyboard="Numeric" TextChanged="AmountEntry_TextChanged" Text="" WidthRequest="64" />
+                    <Entry x:Name="AmountEntry" Keyboard="Numeric" TextChanged="AmountEntry_TextChanged" Text="{Binding BaseAmount, Mode=OneTime}" WidthRequest="64" />
                     <Label Text="{Binding Units}" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" />
 
                     <Button Text="{Binding Units, StringFormat='+5 {0}'}" Style="{StaticResource BtnModifyPortion}" CommandParameter="5" Clicked="ModifyPortionButton_Clicked" />

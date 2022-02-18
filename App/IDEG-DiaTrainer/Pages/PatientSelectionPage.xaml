@@ -1,8 +1,13 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:conv="clr-namespace:IDEG_DiaTrainer.Helpers.Converters"
              x:Class="IDEG_DiaTrainer.Pages.PatientSelectionPage"
              Title="Patient selection"
              BackgroundColor="{DynamicResource SecondaryColor}">
+
+    <ContentPage.Resources>
+        <conv:DiabetesTypeConverter x:Key="DiabTypeConv" />
+    </ContentPage.Resources>
 
     <Grid RowSpacing="25" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
               RowDefinitions="Auto,1*,Auto"
@@ -24,9 +29,8 @@
                 HorizontalTextAlignment="Center"
                 HorizontalOptions="FillAndExpand" />
 
-
         <ListView Grid.Row="1" Grid.Column="0" x:Name="PatientListView"
-                  ItemsSource="{Binding Source={x:Reference PatientSelectionPage}, Path=BindingContext.PatientList}"
+                  ItemsSource="{Binding Source={x:Reference PatientSelectionPage}, Path=PatientList}"
                   VerticalOptions="FillAndExpand">
 
             <ListView.ItemTemplate>
@@ -57,9 +61,9 @@
             <Label Text="Age:"  HorizontalTextAlignment="End" FontAttributes="Bold" Grid.Column="0" Grid.Row="1" />
             <Label Text="Diabetes:"  HorizontalTextAlignment="End" FontAttributes="Bold" Grid.Column="0" Grid.Row="2" />
 
-            <Label Text="" HorizontalTextAlignment="Start" Grid.Column="1" Grid.Row="0" x:Name="NameLabel" />
-            <Label Text="" HorizontalTextAlignment="Start" Grid.Column="1" Grid.Row="1" x:Name="AgeLabel" />
-            <Label Text="" HorizontalTextAlignment="Start" Grid.Column="1" Grid.Row="2" x:Name="DiabLabel" />
+            <Label Text="{Binding SelectedPatient.Name}" HorizontalTextAlignment="Start" Grid.Column="1" Grid.Row="0" x:Name="NameLabel" />
+            <Label Text="{Binding SelectedPatient.Age}" HorizontalTextAlignment="Start" Grid.Column="1" Grid.Row="1" x:Name="AgeLabel" />
+            <Label Text="{Binding SelectedPatient.Diabetes, Converter={StaticResource DiabTypeConv}}" HorizontalTextAlignment="Start" Grid.Column="1" Grid.Row="2" x:Name="DiabLabel" />
         </Grid>
 
         <Button 

@@ -167,7 +167,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Helpers\FoodBlock.xaml">
+	  <MauiXaml Update="Components\FoodBlock.xaml">
 	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\PatientSelectionPage.xaml">
