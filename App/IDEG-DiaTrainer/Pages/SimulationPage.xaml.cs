@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Runtime.Versioning;
+using IDEG_DiaTrainer.Helpers;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 using SkiaSharp;
@@ -41,6 +43,24 @@ namespace IDEG_DiaTrainer.Pages
         {
             get { return _CurrentIOB; }
             set { _CurrentIOB = value; OnPropertyChanged(); }
+        }
+
+        // storage parameter - current datetime
+        private DateTime _CurrentDateTime = DateTime.UtcNow;
+        // property parameter - current insulin on board
+        public DateTime CurrentDateTime
+        {
+            get { return _CurrentDateTime; }
+            set { _CurrentDateTime = value; OnPropertyChanged(); }
+        }
+
+        // storage parameter - is simulation paused?
+        private Boolean _IsPaused = false;
+        // property parameter - is simulation paused?
+        public Boolean IsPaused
+        {
+            get { return _IsPaused; }
+            set { _IsPaused = value; OnPropertyChanged(); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -107,6 +127,20 @@ namespace IDEG_DiaTrainer.Pages
                 simulationViewModel.CurrentIOB = msg.Value;
             else if (msg.SignalId == scgms.SignalGuids.COB)
                 simulationViewModel.CurrentCOB = msg.Value;
+
+            simulationViewModel.CurrentDateTime = msg.DeviceTime;
+
+            Device.BeginInvokeOnMainThread(() => {
+                TimelineDrawable.CurrentDateTime = simulationViewModel.CurrentDateTime;
+                TimelineCanvas.Invalidate();
+            });
+        }
+
+        private void InvalidateSurfaces()
+        {
+            SVGView_Glucose.InvalidateSurface();
+            SVGView_Insulin.InvalidateSurface();
+            SVGView_Carbs.InvalidateSurface();
         }
 
         private void OnDrawingAvailable(Messages.DrawingAvailableMessage msg)
@@ -130,9 +164,7 @@ namespace IDEG_DiaTrainer.Pages
             StoredDrawing_Carbs = controller.GetDrawing(scgms.DrawingFilterInspection.DrawingType.Profile_Carbs);
 
             // invalidate output
-            SVGView_Glucose.InvalidateSurface();
-            SVGView_Insulin.InvalidateSurface();
-            SVGView_Carbs.InvalidateSurface();
+            InvalidateSurfaces();
         }
 
         private void OnGraphPaint_Glucose(object sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e)
@@ -175,6 +207,34 @@ namespace IDEG_DiaTrainer.Pages
             canvas.DrawPicture(img.Picture, ref matrix);
         }
 
+        private void Pause()
+        {
+            if (simulationViewModel.IsPaused)
+                return;
+
+            simulationViewModel.IsPaused = true;
+            controller.Pause();
+        }
+
+        private void Resume()
+        {
+            if (!simulationViewModel.IsPaused)
+                return;
+
+            simulationViewModel.IsPaused = false;
+            controller.Resume();
+        }
+
+        private void PauseButton_Clicked(object sender, EventArgs e)
+        {
+            Pause();
+        }
+
+        private void PlayButton_Clicked(object sender, EventArgs e)
+        {
+            Resume();
+        }
+
         private async void MealButton_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new Popups.MealPopup(foodManager));
@@ -187,6 +247,11 @@ namespace IDEG_DiaTrainer.Pages
             };
             Application.Current.OpenWindow(newWindow);
             */
+        }
+
+        private async void InsulinButton_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Popups.InsulinPopup());
         }
     }
 }

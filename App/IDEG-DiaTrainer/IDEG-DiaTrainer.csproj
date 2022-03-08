@@ -79,8 +79,14 @@
 	  <None Remove="Resources\Content\Food\img\bolonske-spagety.jpg" />
 	  <None Remove="Resources\Content\Food\img\tatranka-coko-liskooriskova-opavia.jpg" />
 	  <None Remove="Resources\Images\appicon.png" />
+	  <None Remove="Resources\Images\cloudyday.png" />
+	  <None Remove="Resources\Images\crescentmoon.png" />
 	  <None Remove="Resources\Images\dotnet_bot.svg" />
 	  <None Remove="Resources\Images\fastfood.png" />
+	  <None Remove="Resources\Images\pause.png" />
+	  <None Remove="Resources\Images\play.png" />
+	  <None Remove="Resources\Images\sunrise.png" />
+	  <None Remove="Resources\Images\sunset.png" />
 	  <None Remove="Resources\Images\syringe.png" />
 	</ItemGroup>
 
@@ -161,6 +167,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\SimulationShell.xaml.cs">
+	    <DependentUpon>SimulationShell.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\Popups\InsulinPopup.xaml.cs">
+	    <DependentUpon>InsulinPopup.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\Popups\MealConfirmPopup.xaml.cs">
 	    <DependentUpon>MealConfirmPopup.xaml</DependentUpon>
 	  </Compile>
@@ -170,8 +182,17 @@
 	  <MauiXaml Update="Components\FoodBlock.xaml">
 	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Components\Pumps\DefaultPump.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\SimulationShell.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\PatientSelectionPage.xaml">
 	    <Generator></Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Popups\InsulinPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Popups\MealConfirmPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>

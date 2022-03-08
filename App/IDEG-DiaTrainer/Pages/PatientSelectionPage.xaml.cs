@@ -65,12 +65,13 @@ namespace IDEG_DiaTrainer.Pages
             };
         }
 
-        public async void OnContinueButtonClicked(object sender, EventArgs args)
+        public /*async*/ void OnContinueButtonClicked(object sender, EventArgs args)
         {
             if (SelectionViewModel.SelectedPatient == null)
                 return;
 
-            await Navigation.PushAsync(new Pages.SimulationPage(SelectionViewModel.SelectedPatient.Id));
+            //await Navigation.PushAsync(new Pages.SimulationPage(SelectionViewModel.SelectedPatient.Id));
+            Application.Current.MainPage = new SimulationShell();
         }
     }
 }

@@ -31,8 +31,8 @@ namespace IDEG_DiaTrainer.scgms
 
         public static DateTime RatTimeToDateTime(double ratTime)
         {
-            DateTime b = new DateTime(1970, 1, 1);
-            b.AddSeconds(RatTimeToUnixTime(ratTime));
+            DateTime b = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            b = b.AddSeconds(RatTimeToUnixTime(ratTime));//.ToLocalTime();
 
             return b;
         }

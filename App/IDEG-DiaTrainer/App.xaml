@@ -27,6 +27,7 @@
                 <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}"/>
                 <Setter Property="Margin" Value="0,0,0,15"/>
                 <Setter Property="HeightRequest" Value="64"/>
+                <Setter Property="WidthRequest" Value="64"/>
             </Style>
 
             <Style x:Key="BtnModifyPortion" TargetType="Button">

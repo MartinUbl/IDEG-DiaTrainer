@@ -1,21 +1,48 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:conv="clr-namespace:IDEG_DiaTrainer.Helpers.Converters"
+             xmlns:helpers="clr-namespace:IDEG_DiaTrainer.Helpers"
              xmlns:views="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
              NavigationPage.HasNavigationBar="False"
              NavigationPage.HasBackButton="False"
              Title="Simulation"
              x:Class="IDEG_DiaTrainer.Pages.SimulationPage">
 
+    <ContentPage.Resources>
+        <conv:TimeFormatConverter x:Key="TimeFormatConverter" />
+        <conv:DayOfWeekConverter x:Key="DayOfWeekConverter" />
+        <conv:NegateConverter x:Key="NegateConverter" />
+        <conv:ConditionalColorConverter x:Key="ConditionalColorConverter" />
+        <conv:TimeImageSourceConverter x:Key="TimeImageSourceConverter" />
+
+        <helpers:TimelineGenerator x:Key="TimelineDrawable" x:Name="TimelineDrawable" />
+    </ContentPage.Resources>
+
     <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" ColumnDefinitions="72,1*" RowDefinitions="2*,1*,1*,1*" ColumnSpacing="16"
                 Padding="{OnPlatform iOS='30,60,30,30', Default='10,10,10,60'}">
 
         <StackLayout Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" VerticalOptions="FillAndExpand">
+
+            <Image Source="pause.png" IsVisible="{Binding IsPaused, Converter={StaticResource NegateConverter}}" Style="{StaticResource ImgButtonUI}">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="PauseButton_Clicked"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Image Source="play.png" IsVisible="{Binding IsPaused}" Style="{StaticResource ImgButtonUI}">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="PlayButton_Clicked"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+
             <Image Source="fastfood.png" Style="{StaticResource ImgButtonUI}">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="MealButton_Clicked"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
             </Image>
             <Image Source="syringe.png" Style="{StaticResource ImgButtonUI}">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="InsulinButton_Clicked"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
             </Image>
             <Image Source="jogging.png" Style="{StaticResource ImgButtonUI}">
             </Image>
@@ -32,7 +59,7 @@
         <views:SKCanvasView x:Name="SVGView_Insulin" VerticalOptions="FillAndExpand" Grid.Row="1" Grid.Column="1" HorizontalOptions="FillAndExpand" PaintSurface="OnGraphPaint_Insulin" Margin="0,0,0,10" />
         <views:SKCanvasView x:Name="SVGView_Carbs" VerticalOptions="FillAndExpand" Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" PaintSurface="OnGraphPaint_Carbs" Margin="0,0,0,10" />
 
-        <Grid Grid.Row="4" Grid.Column="1" RowDefinitions="1*,1*,1*,1*" ColumnDefinitions="1*,1*,1*,1*">
+        <Grid Grid.Row="4" Grid.Column="1" RowDefinitions="1*,1*,1*,1*" ColumnDefinitions="1*,1*,1*,1*,1*">
 
             <Label Text="Current glucose" Grid.Row="0" Grid.Column="0" />
             <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Padding="0,0,0,15" VerticalOptions="FillAndExpand">
@@ -49,8 +76,22 @@
             <Label Text="Current carbohydrates on board" Grid.Row="0" Grid.Column="1" />
             <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Padding="0,0,0,15" VerticalOptions="FillAndExpand">
                 <Label x:Name="COBLabel" Text="{Binding CurrentCOB, StringFormat='{0:#,#.0}'}" FontSize="Large" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" />
-                <Label Text="g" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" Padding="10,15,0,0" />
+                <Label Text="g" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" Padding="10,15,5,5" />
             </StackLayout>
+
+
+
+            <Label Text="Date and time" Grid.Row="0" Grid.Column="3" />
+            <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="3" Padding="0,0,0,15" VerticalOptions="FillAndExpand">
+                <Label Text="{Binding CurrentDateTime, Mode=OneWay, Converter={StaticResource TimeFormatConverter}}" FontSize="Large" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" TextColor="{Binding IsPaused, Converter={StaticResource ConditionalColorConverter}, ConverterParameter='#FF0000|#0000FF', Mode=OneWay}" />
+                <Label Text="{Binding CurrentDateTime, Mode=OneWay, Converter={StaticResource DayOfWeekConverter}}" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" Padding="10,15,5,5" />
+            </StackLayout>
+
+            <Label Text="Timeline" Grid.Row="0" Grid.Column="4" />
+            <GraphicsView Grid.Row="1" Grid.Column="4" Drawable="{StaticResource TimelineDrawable}" x:Name="TimelineCanvas" Grid.RowSpan="2" />
+
+            <Image Source="{Binding CurrentDateTime, Mode=OneWay, Converter={StaticResource TimeImageSourceConverter}}"
+                   HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" MaximumWidthRequest="92" MaximumHeightRequest="92" Aspect="AspectFit" Grid.Row="4" Grid.Column="4" />
 
         </Grid>
 

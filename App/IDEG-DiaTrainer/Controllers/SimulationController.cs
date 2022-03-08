@@ -141,6 +141,10 @@ namespace IDEG_DiaTrainer.Controllers
             Exec = new scgms.Execution();
 
             StartTime = DateTime.UtcNow;
+            StartTime = StartTime.AddHours(-StartTime.Hour).AddMinutes(-StartTime.Minute).AddSeconds(-StartTime.Second);
+
+            StartTime = StartTime.AddHours(6);
+
             Paused = false;
 
             Exec.RegisterCallback(ExecuteCallback);
@@ -157,7 +161,7 @@ namespace IDEG_DiaTrainer.Controllers
             }
 
             // start the tick timer
-            Device.StartTimer(TimeSpan.FromSeconds(1), TimerCallback);
+            Device.StartTimer(TimeSpan.FromMilliseconds(1000), TimerCallback);
 
             // subscribe for controlling messages
             MessagingCenter.Subscribe<InjectCarbsMessage>(this, InjectCarbsMessage.Name, ProcessInjectCarbsMessage);
