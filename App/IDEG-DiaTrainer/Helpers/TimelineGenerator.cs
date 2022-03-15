@@ -34,7 +34,7 @@ namespace IDEG_DiaTrainer.Helpers
             canvas.FontColor = (Color)App.Current.Resources["PrimaryColor"];
 
             float curMin = (float)CurrentDateTime.Hour * 60.0f + (float)CurrentDateTime.Minute;
-            DailySchedule.BlockActivity currentActivity = DailySchedule.BlockActivity.Normal;
+            DailySchedule.BlockActivity currentActivity = DailySchedule.BlockActivity.Regular;
             DailySchedule.BlockActivity upcomingBlockActivity = DailySchedule.BlockActivity.None;
             DailySchedule.EventActivity upcomingEventActivity = DailySchedule.EventActivity.None;
 
@@ -44,7 +44,7 @@ namespace IDEG_DiaTrainer.Helpers
             canvas.DrawRectangle(rect);
 
             // basic timeline rectangle - the whole strip fits into this rectangle, excluding arrow and texts
-            RectangleF tlRect = new RectangleF(StripPadding, rect.Height / 3.0f - StripHeight / 4.0f, rect.Width - 2.0f * StripPadding, StripHeight);
+            RectangleF tlRect = new RectangleF(StripPadding, /*rect.Height / 3.0f - StripHeight / 4.0f*/14.0f, rect.Width - 2.0f * StripPadding, StripHeight);
 
             float minuteWidth = tlRect.Width / (24.0f * 60.0f); // how wide is one minute?
 
@@ -58,7 +58,7 @@ namespace IDEG_DiaTrainer.Helpers
 
                 switch (block.Activity)
                 {
-                    case DailySchedule.BlockActivity.Normal:            col = Colors.LightBlue; break;
+                    case DailySchedule.BlockActivity.Regular:           col = Colors.LightBlue; break;
                     case DailySchedule.BlockActivity.Work:              col = Colors.Blue; break;
                     case DailySchedule.BlockActivity.Rest:              col = Colors.AliceBlue; break;
                     case DailySchedule.BlockActivity.Sleep:             col = Colors.DarkBlue; break;
@@ -156,13 +156,14 @@ namespace IDEG_DiaTrainer.Helpers
             if (upcomingBlockActivity != DailySchedule.BlockActivity.None)
             {
                 canvas.DrawString(String.Format("Upcoming state: {0}", DailySchedule.BlockActivityToString(upcomingBlockActivity)), 0, baseY, HorizontalAlignment.Left);
-                baseY += 16.0f;
+                //baseY += 16.0f;
             }
 
             if (upcomingEventActivity != DailySchedule.EventActivity.None)
             {
-                canvas.DrawString(String.Format("Upcoming event: {0}", DailySchedule.EventActivityToString(upcomingEventActivity)), 0, baseY, HorizontalAlignment.Left);
-                baseY += 16.0f;
+                canvas.DrawString(String.Format("Upcoming event: {0}", DailySchedule.EventActivityToString(upcomingEventActivity)), rect.Width, baseY, HorizontalAlignment.Right);
+                //canvas.DrawString(String.Format("Upcoming event: {0}", DailySchedule.EventActivityToString(upcomingEventActivity)), 0, baseY, HorizontalAlignment.Left);
+                //baseY += 16.0f;
             }
         }
     }

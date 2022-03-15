@@ -1,10 +1,82 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:IDEG_DiaTrainer.Helpers.Converters"
+             xmlns:local="clr-namespace:IDEG_DiaTrainer.Components"
              x:Class="IDEG_DiaTrainer.Components.Pumps.DefaultPump">
+
+    <ContentView.Resources>
+        <converters:PercentageConverter x:Key="PctConv" />
+    </ContentView.Resources>
+
     <ContentView.Content>
-        <StackLayout>
-            <Label Text="Hello .NET MAUI!" />
+        <StackLayout WidthRequest="540" HeightRequest="300" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Black">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <GraphicsView WidthRequest="32" VerticalOptions="FillAndExpand" x:Name="BatteryPctIndicator" HorizontalOptions="Start" />
+                <Label Text="{Binding BatteryCharge, Converter={StaticResource PctConv}}" TextColor="White" WidthRequest="150" HorizontalTextAlignment="Start" HorizontalOptions="Start" x:Name="BatteryPctLabel" Margin="5,0,5,0" VerticalTextAlignment="Center" />
+                <Label Text="{Binding CurrentDateTime, StringFormat='{}{0:H:mm}'}" TextColor="White" HorizontalOptions="CenterAndExpand" FontAttributes="Bold" x:Name="TimeLabel" />
+                <Label Text="{Binding RemainingInsulin, StringFormat='{0:0.0} U'}" TextColor="White" WidthRequest="150" HorizontalTextAlignment="End" HorizontalOptions="End" x:Name="InsulinPctLabel" Margin="5,0,5,0" VerticalTextAlignment="Center" />
+                <GraphicsView WidthRequest="32" VerticalOptions="FillAndExpand" x:Name="InsulinPctIndicator" HorizontalOptions="End" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="{Binding CurrentDateTime, StringFormat='{}{0:d. M. yyyy}'}" TextColor="White" HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" x:Name="DefaultLayout">
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <GraphicsView HeightRequest="116" HorizontalOptions="FillAndExpand" x:Name="IGGraph" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+
+                    <StackLayout Orientation="Vertical" WidthRequest="120">
+                        <Label Text="IOB" TextColor="White" FontSize="Subtitle" Margin="8" />
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding CurrentIOB, StringFormat='{0:0.0}'}" TextColor="White" x:Name="IOBLabel" FontSize="Title" Margin="8" />
+                            <Label Text="U" TextColor="White" Margin="8" VerticalOptions="End" />
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Vertical" WidthRequest="120">
+                        <Label Text="IG" TextColor="White" FontSize="Subtitle" Margin="8" />
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding CurrentIG, StringFormat='{0:0.0}'}" TextColor="White" x:Name="IGLabel" FontSize="Title" Margin="8" />
+                            <Label Text="mmol/l" TextColor="White" Margin="8" VerticalOptions="End" />
+                        </StackLayout>
+                    </StackLayout>
+                
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand">
+                    <Button x:Name="BasalButton" Text="Basal rate" HorizontalOptions="FillAndExpand" Margin="8,0,4,0" Clicked="BasalButton_Clicked" />
+                    <Button x:Name="BolusButton" Text="Bolus" HorizontalOptions="FillAndExpand" Margin="4,0,8,0" Clicked="BolusButton_Clicked" />
+                </StackLayout>
+
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" x:Name="BolusLayout" IsVisible="false" VerticalOptions="End">
+                <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <local:PumpKeyboard x:Name="BolusKeyboard" Units="U" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="End">
+                    <Button x:Name="BolusCancelButton" Text="Cancel" HorizontalOptions="FillAndExpand" Margin="8,0,4,0" Clicked="BolusCancelButton_Clicked" />
+                    <Button x:Name="BolusConfirmButton" Text="Deliver bolus" HorizontalOptions="FillAndExpand" Margin="4,0,8,0" Clicked="BolusConfirmButton_Clicked" />
+                </StackLayout>
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" x:Name="BolusConfirmLayout" IsVisible="false" VerticalOptions="End">
+                <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="6" RowSpacing="6" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Label Grid.Row="1" Grid.Column="0" Text="Current IG" FontSize="Subtitle" />
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding CurrentIG, StringFormat='{0:0.0}'}" FontSize="Subtitle" TextColor="White" />
+                    <Label Grid.Row="0" Grid.Column="0" Text="Bolus amount" FontSize="Subtitle" />
+                    <Label Grid.Row="0" Grid.Column="1" BindingContext="{x:Reference BolusKeyboard}" Text="{Binding Path=viewModel.TextValue, StringFormat='{}{0} U'}" FontSize="Subtitle" TextColor="White" />
+                </Grid>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="End">
+                    <Button x:Name="BolusCancel2Button" Text="Cancel" HorizontalOptions="FillAndExpand" Margin="8,0,4,0" Clicked="BolusCancel2Button_Clicked" />
+                    <Button x:Name="BolusConfirm2Button" Text="Click to deliver" HorizontalOptions="FillAndExpand" Margin="4,0,8,0" Clicked="BolusConfirm2Button_Clicked" />
+                </StackLayout>
+            </StackLayout>
+
         </StackLayout>
     </ContentView.Content>
+
 </ContentView>

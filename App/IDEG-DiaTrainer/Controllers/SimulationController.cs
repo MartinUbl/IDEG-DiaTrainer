@@ -165,6 +165,7 @@ namespace IDEG_DiaTrainer.Controllers
 
             // subscribe for controlling messages
             MessagingCenter.Subscribe<InjectCarbsMessage>(this, InjectCarbsMessage.Name, ProcessInjectCarbsMessage);
+            MessagingCenter.Subscribe<InjectBolusMessage>(this, InjectBolusMessage.Name, ProcessInjectBolusMessage);
 
             return true;
         }
@@ -212,6 +213,21 @@ namespace IDEG_DiaTrainer.Controllers
             InjectLevelEvent(
                 msg.IsRescue ? scgms.SignalGuids.CarbRescue : scgms.SignalGuids.CarbIntake,
                 msg.CarbAmount,
+                msg.When);
+        }
+
+        /// <summary>
+        /// Inject bolus message callback
+        /// </summary>
+        /// <param name="msg"></param>
+        public void ProcessInjectBolusMessage(InjectBolusMessage msg)
+        {
+            if (msg.BolusAmount <= 0)
+                return;
+
+            InjectLevelEvent(
+                scgms.SignalGuids.RequestedInsulinBolus,
+                msg.BolusAmount,
                 msg.When);
         }
     }

@@ -1,0 +1,57 @@
+﻿<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:local="clr-namespace:IDEG_DiaTrainer.Helpers.Converters"
+      x:Class="IDEG_DiaTrainer.Components.PumpKeyboard"
+      ColumnSpacing="6"
+      RowSpacing="6"
+      >
+
+    <Grid.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BtnKeyboard" TargetType="Button">
+                <Setter Property="Padding" Value="6"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="StartAndExpand" />
+            </Style>
+        </ResourceDictionary>
+    </Grid.Resources>
+
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="1*" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <Label TextColor="White" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" FontSize="Subtitle">
+        <Label.Text>
+            <MultiBinding StringFormat="{}{0} {1}">
+                <Binding Path="TextValue"/>
+                <Binding Path="Units"/>
+            </MultiBinding>
+        </Label.Text>
+    </Label>
+
+    <Button Text="1" Grid.Row="1" Grid.Column="0" Style="{StaticResource BtnKeyboard}" Clicked="Button_Clicked" />
+    <Button Text="2" Grid.Row="1" Grid.Column="1" Style="{StaticResource BtnKeyboard}" Clicked="Button_Clicked" />
+    <Button Text="3" Grid.Row="1" Grid.Column="2" Style="{StaticResource BtnKeyboard}" Clicked="Button_Clicked" />
+
+    <Button Text="4" Grid.Row="2" Grid.Column="0" Style="{StaticResource BtnKeyboard}" Clicked="Button_Clicked" />
+    <Button Text="5" Grid.Row="2" Grid.Column="1" Style="{StaticResource BtnKeyboard}" Clicked="Button_Clicked" />
+    <Button Text="6" Grid.Row="2" Grid.Column="2" Style="{StaticResource BtnKeyboard}" Clicked="Button_Clicked" />
+
+    <Button Text="7" Grid.Row="3" Grid.Column="0" Style="{StaticResource BtnKeyboard}" Clicked="Button_Clicked" />
+    <Button Text="8" Grid.Row="3" Grid.Column="1" Style="{StaticResource BtnKeyboard}" Clicked="Button_Clicked" />
+    <Button Text="9" Grid.Row="3" Grid.Column="2" Style="{StaticResource BtnKeyboard}" Clicked="Button_Clicked" />
+
+    <Button Text="X" Grid.Row="4" Grid.Column="0" Style="{StaticResource BtnKeyboard}" Clicked="Button_Clicked" />
+    <Button Text="0" Grid.Row="4" Grid.Column="1" Style="{StaticResource BtnKeyboard}" Clicked="Button_Clicked" />
+    <Button Text="." Grid.Row="4" Grid.Column="2" Style="{StaticResource BtnKeyboard}" Clicked="Button_Clicked" />
+
+</Grid>

@@ -6,9 +6,13 @@
              x:Class="IDEG_DiaTrainer.Pages.Popups.InsulinPopup">
     <Grid ColumnDefinitions="1*,1*" RowDefinitions="1*">
 
-        <pumps:DefaultPump Grid.Row="0" Grid.Column="0" />
+        <StackLayout Orientation="Vertical" Grid.Row="0" Grid.Column="0" x:Name="PumpUITarget" VerticalOptions="Center">
+            <Label Text="Insulin pump display" HorizontalOptions="CenterAndExpand" Margin="10" FontSize="Subtitle" />
+            <!-- The program inserts the control here -->
+        </StackLayout>
 
-        <StackLayout Orientation="Vertical" Grid.Row="0" Grid.Column="1">
+        <StackLayout Orientation="Vertical" Grid.Row="0" Grid.Column="1" VerticalOptions="Center">
+            <Label Text="Insulin pump physical control" HorizontalOptions="CenterAndExpand" Margin="10" FontSize="Subtitle" />
             <Label Text="TODO: external controls (battery charge, reservoir change, infusion set change, ...)" />
         </StackLayout>
 

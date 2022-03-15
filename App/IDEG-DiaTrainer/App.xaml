@@ -18,6 +18,12 @@
                 <Setter Property="FontFamily" Value="OpenSansRegular" />
                 <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}" />
                 <Setter Property="Padding" Value="14,10" />
+
+                <Style.Triggers>
+                    <Trigger Property="IsFocused" Value="True" TargetType="Button">
+                        <Setter Property="TextColor" Value="GhostWhite" />
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
             <Style x:Key="ImgButtonUI" TargetType="Image">

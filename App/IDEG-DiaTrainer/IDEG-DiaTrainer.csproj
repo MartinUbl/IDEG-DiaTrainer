@@ -160,6 +160,8 @@
 
 	<ItemGroup>
 	  <PackageReference Include="CsvHelper" Version="27.2.1" />
+	  <PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.200-preview.13.935" />
+	  <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="6.0.200-preview.13.935" />
 	  <PackageReference Include="SkiaSharp" Version="2.88.0-preview.187" />
 	  <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
 	  <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.0-preview.187" />
@@ -180,6 +182,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Components\FoodBlock.xaml">
+	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\PumpKeyboard.xaml">
 	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\Pumps\DefaultPump.xaml">

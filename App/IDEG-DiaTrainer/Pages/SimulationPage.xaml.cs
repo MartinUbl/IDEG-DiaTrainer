@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
+using IDEG_DiaTrainer.Controllers;
 using IDEG_DiaTrainer.Helpers;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
@@ -61,6 +62,13 @@ namespace IDEG_DiaTrainer.Pages
         {
             get { return _IsPaused; }
             set { _IsPaused = value; OnPropertyChanged(); }
+        }
+
+        private PumpController _Pump = new PumpController();
+        public PumpController Pump
+        {
+            get { return _Pump; }
+            set { _Pump = value; OnPropertyChanged(); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -251,7 +259,7 @@ namespace IDEG_DiaTrainer.Pages
 
         private async void InsulinButton_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Popups.InsulinPopup());
+            await Navigation.PushAsync(new Popups.InsulinPopup(simulationViewModel.Pump));
         }
     }
 }

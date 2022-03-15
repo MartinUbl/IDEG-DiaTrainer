@@ -87,12 +87,14 @@
                 <Label Text="{Binding CurrentDateTime, Mode=OneWay, Converter={StaticResource DayOfWeekConverter}}" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" Padding="10,15,5,5" />
             </StackLayout>
 
-            <Label Text="Timeline" Grid.Row="0" Grid.Column="4" />
+            <Label Text="Daily routine timeline" Grid.Row="0" Grid.Column="4" />
             <GraphicsView Grid.Row="1" Grid.Column="4" Drawable="{StaticResource TimelineDrawable}" x:Name="TimelineCanvas" Grid.RowSpan="2" />
 
-            <Image Source="{Binding CurrentDateTime, Mode=OneWay, Converter={StaticResource TimeImageSourceConverter}}"
-                   HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" MaximumWidthRequest="92" MaximumHeightRequest="92" Aspect="AspectFit" Grid.Row="4" Grid.Column="4" />
-
+            <StackLayout Orientation="Horizontal" Grid.Row="4" Grid.Column="4" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Image Source="{Binding CurrentDateTime, Mode=OneWay, Converter={StaticResource TimeImageSourceConverter}}"
+                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" MaximumWidthRequest="92" MaximumHeightRequest="92"
+                       Aspect="AspectFit" />
+            </StackLayout>
         </Grid>
 
     </Grid>

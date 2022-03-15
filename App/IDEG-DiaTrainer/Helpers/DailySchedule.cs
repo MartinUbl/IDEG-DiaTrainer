@@ -12,7 +12,7 @@ namespace IDEG_DiaTrainer.Helpers
         {
             None, // marker value
 
-            Normal,
+            Regular,
             Sleep,
             Rest,
             Work,
@@ -23,7 +23,7 @@ namespace IDEG_DiaTrainer.Helpers
         {
             switch (act)
             {
-                case DailySchedule.BlockActivity.Normal: return "Normal";
+                case DailySchedule.BlockActivity.Regular: return "Regular";
                 case DailySchedule.BlockActivity.Work: return "Working";
                 case DailySchedule.BlockActivity.Rest: return "Resting";
                 case DailySchedule.BlockActivity.Sleep: return "Sleeping";
@@ -103,12 +103,12 @@ namespace IDEG_DiaTrainer.Helpers
             DailySchedule schedule = new DailySchedule();
 
             schedule.AddBlock(0, 0, 6, 30, BlockActivity.Sleep)
-                    .AddBlock(6, 30, 7, 30, BlockActivity.Normal)
+                    .AddBlock(6, 30, 7, 30, BlockActivity.Regular)
                     .AddBlock(7, 30, 12, 00, BlockActivity.Work)
-                    .AddBlock(12, 00, 12, 30, BlockActivity.Normal)
+                    .AddBlock(12, 00, 12, 30, BlockActivity.Regular)
                     .AddBlock(12, 30, 17, 00, BlockActivity.Work)
                     .AddBlock(17, 00, 17, 30, BlockActivity.PhysicalActivity)
-                    .AddBlock(17, 30, 19, 00, BlockActivity.Normal)
+                    .AddBlock(17, 30, 19, 00, BlockActivity.Regular)
                     .AddBlock(19, 00, 22, 30, BlockActivity.Rest)
                     .AddBlock(22, 30, 23, 59, BlockActivity.Sleep);
 
