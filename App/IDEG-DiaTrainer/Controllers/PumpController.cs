@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Controls;
+﻿using IDEG_DiaTrainer.Messages;
+using Microsoft.Maui.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -70,6 +71,13 @@ namespace IDEG_DiaTrainer.Controllers
                 CurrentIG = msg.Value;
             }
 
+            if (msg.SignalId == scgms.SignalGuids.DeliveredInsulinBolus)
+            {
+                RemainingInsulin -= msg.Value;
+                if (RemainingInsulin == 0)
+                    SendBasalRate(0);
+            }
+
             if (msg.SignalId == scgms.SignalGuids.IOB)
                 CurrentIOB = msg.Value;
             // discard past values
@@ -88,6 +96,36 @@ namespace IDEG_DiaTrainer.Controllers
             }
 
             CurrentDateTime = msg.DeviceTime;
+        }
+
+        public bool SendBolus(double amount)
+        {
+            // not enough insulin in reservoir
+            if (RemainingInsulin < amount)
+                return false;
+
+            MessagingCenter.Send<InjectBolusMessage>(new InjectBolusMessage
+            {
+                BolusAmount = amount,
+                When = null,
+            }, InjectBolusMessage.Name);
+
+            return true;
+        }
+
+        public bool SendBasalRate(double rate)
+        {
+            // reservoir should have insulin for at least 10 minutes (TODO: confirm this with real pumps)
+            if (rate > 0 && RemainingInsulin < rate / 6.0)
+                return false;
+
+            MessagingCenter.Send<InjectBasalMessage>(new InjectBasalMessage
+            {
+                BasalRate = rate,
+                When = null,
+            }, InjectBasalMessage.Name);
+
+            return true;
         }
     }
 }

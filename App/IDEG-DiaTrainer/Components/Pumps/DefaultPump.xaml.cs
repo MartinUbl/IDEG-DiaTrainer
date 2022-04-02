@@ -1,6 +1,7 @@
 using IDEG_DiaTrainer.Controllers;
 using IDEG_DiaTrainer.Messages;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Graphics;
 using System;
 
@@ -23,7 +24,7 @@ namespace IDEG_DiaTrainer.Components.Pumps
 			IsBatteryIndicator = IsBattery;
 		}
 
-		public void Draw(ICanvas canvas, RectangleF rect)
+		public void Draw(ICanvas canvas, RectF rect)
 		{
 			canvas.FillColor = Colors.Black;
 			canvas.FillRectangle(rect);
@@ -84,7 +85,7 @@ namespace IDEG_DiaTrainer.Components.Pumps
 			pump = controller;
 		}
 
-		public void Draw(ICanvas canvas, RectangleF rect)
+		public void Draw(ICanvas canvas, RectF rect)
 		{
 			double minVal = 3.0; // always draw at least 3.0 mmol/l
 			double maxVal = 11.0; // always draw at least 11 mmol/l
@@ -165,50 +166,95 @@ namespace IDEG_DiaTrainer.Components.Pumps
 			IGGraph.Drawable = new SimpleGraphDrawable(pump);
 		}
 
+		private enum ViewType
+        {
+			Default,
+			Bolus,
+			BolusConfirm,
+			Basal,
+			BasalConfirm,
+        }
+
+		private void SetViewType(ViewType type)
+        {
+			DefaultLayout.IsVisible = false;
+			BolusLayout.IsVisible = false;
+			BolusConfirmLayout.IsVisible = false;
+			BasalLayout.IsVisible = false;
+			BasalConfirmLayout.IsVisible = false;
+
+			switch (type)
+            {
+				case ViewType.Default:
+					DefaultLayout.IsVisible = true;
+					break;
+				case ViewType.Bolus:
+					BolusLayout.IsVisible = true;
+					break;
+				case ViewType.BolusConfirm:
+					BolusConfirmLayout.IsVisible = true;
+					break;
+				case ViewType.Basal:
+					BasalLayout.IsVisible = true;
+					break;
+				case ViewType.BasalConfirm:
+					BasalConfirmLayout.IsVisible = true;
+					break;
+            }
+        }
+
 		private void BasalButton_Clicked(object sender, EventArgs e)
 		{
-			//
+			SetViewType(ViewType.Basal);
 		}
 
 		private void BolusButton_Clicked(object sender, EventArgs e)
 		{
-			DefaultLayout.IsVisible = false;
-			BolusLayout.IsVisible = true;
-			BolusConfirmLayout.IsVisible = false;
+			SetViewType(ViewType.Bolus);
 		}
 
         private void BolusCancelButton_Clicked(object sender, EventArgs e)
         {
-			DefaultLayout.IsVisible = true;
-			BolusLayout.IsVisible = false;
-			BolusConfirmLayout.IsVisible = false;
+			SetViewType(ViewType.Default);
 		}
 
         private void BolusConfirmButton_Clicked(object sender, EventArgs e)
         {
-			DefaultLayout.IsVisible = false;
-			BolusLayout.IsVisible = false;
-			BolusConfirmLayout.IsVisible = true;
+			SetViewType(ViewType.BolusConfirm);
 		}
 
         private void BolusCancel2Button_Clicked(object sender, EventArgs e)
         {
-			DefaultLayout.IsVisible = false;
-			BolusLayout.IsVisible = true;
-			BolusConfirmLayout.IsVisible = false;
+			SetViewType(ViewType.Bolus);
 		}
 
         private void BolusConfirm2Button_Clicked(object sender, EventArgs e)
         {
-			MessagingCenter.Send<InjectBolusMessage>(new InjectBolusMessage
-			{
-				BolusAmount = BolusKeyboard.GetEnteredValue(),
-				When = null,
-			}, InjectBolusMessage.Name);
+			pump.SendBolus(BolusKeyboard.GetEnteredValue());
 
-			DefaultLayout.IsVisible = true;
-			BolusLayout.IsVisible = false;
-			BolusConfirmLayout.IsVisible = false;
+			SetViewType(ViewType.Default);
+		}
+
+        private void BasalCancelButton_Clicked(object sender, EventArgs e)
+        {
+			SetViewType(ViewType.Default);
+		}
+
+        private void BasalConfirmButton_Clicked(object sender, EventArgs e)
+        {
+			SetViewType(ViewType.BasalConfirm);
+		}
+
+        private void BasalCancel2Button_Clicked(object sender, EventArgs e)
+        {
+			SetViewType(ViewType.Basal);
+		}
+
+        private void BasalConfirm2Button_Clicked(object sender, EventArgs e)
+        {
+			pump.SendBasalRate(BasalKeyboard.GetEnteredValue());
+
+			SetViewType(ViewType.Default);
 		}
     }
 }

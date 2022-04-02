@@ -13,6 +13,7 @@
         <conv:DayOfWeekConverter x:Key="DayOfWeekConverter" />
         <conv:NegateConverter x:Key="NegateConverter" />
         <conv:ConditionalColorConverter x:Key="ConditionalColorConverter" />
+        <conv:PauseImageSourceConverter x:Key="PauseImageSourceConverter" />
         <conv:TimeImageSourceConverter x:Key="TimeImageSourceConverter" />
 
         <helpers:TimelineGenerator x:Key="TimelineDrawable" x:Name="TimelineDrawable" />
@@ -23,12 +24,7 @@
 
         <StackLayout Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" VerticalOptions="FillAndExpand">
 
-            <Image Source="pause.png" IsVisible="{Binding IsPaused, Converter={StaticResource NegateConverter}}" Style="{StaticResource ImgButtonUI}">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="PauseButton_Clicked"></TapGestureRecognizer>
-                </Image.GestureRecognizers>
-            </Image>
-            <Image Source="play.png" IsVisible="{Binding IsPaused}" Style="{StaticResource ImgButtonUI}">
+            <Image Source="{Binding IsPaused, Converter={StaticResource PauseImageSourceConverter}}" Style="{StaticResource ImgButtonUI}">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="PlayButton_Clicked"></TapGestureRecognizer>
                 </Image.GestureRecognizers>

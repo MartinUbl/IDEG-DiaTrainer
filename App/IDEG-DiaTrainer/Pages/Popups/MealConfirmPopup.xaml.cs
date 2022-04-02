@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using IDEG_DiaTrainer.Helpers;
 using IDEG_DiaTrainer.Messages;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
@@ -47,10 +48,7 @@ namespace IDEG_DiaTrainer.Pages.Popups
                     IsRescue = false
                 }, InjectCarbsMessage.Name);
 
-                // this causes the previous page to be popped as well (so we return to simulation)
-                // TODO: make this a bit more generic
-                Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-                await Navigation.PopAsync();
+                WindowManager.Instance.CloseWindow(WindowTypes.Meal);
             }
             else
             {

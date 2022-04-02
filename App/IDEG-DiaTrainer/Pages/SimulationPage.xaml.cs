@@ -106,7 +106,7 @@ namespace IDEG_DiaTrainer.Pages
         // indicator of resize message being sent
         private bool ResizeMsgSent = false;
 
-        public SimulationPage(int patientId = -1)
+        public SimulationPage()
         {
             BindingContext = simulationViewModel;
 
@@ -114,7 +114,7 @@ namespace IDEG_DiaTrainer.Pages
 
             // initialize controller
             controller = new Controllers.SimulationController();
-            controller.Start(patientId);
+            controller.Start(-1); // TODO
 
             // initialize food manager
             foodManager = new Helpers.FoodManager();
@@ -138,7 +138,7 @@ namespace IDEG_DiaTrainer.Pages
 
             simulationViewModel.CurrentDateTime = msg.DeviceTime;
 
-            Device.BeginInvokeOnMainThread(() => {
+            Dispatcher.Dispatch(() => {
                 TimelineDrawable.CurrentDateTime = simulationViewModel.CurrentDateTime;
                 TimelineCanvas.Invalidate();
             });
@@ -233,33 +233,22 @@ namespace IDEG_DiaTrainer.Pages
             controller.Resume();
         }
 
-        private void PauseButton_Clicked(object sender, EventArgs e)
-        {
-            Pause();
-        }
-
         private void PlayButton_Clicked(object sender, EventArgs e)
         {
-            Resume();
+            if (simulationViewModel.IsPaused)
+                Resume();
+            else
+                Pause();
         }
 
-        private async void MealButton_Clicked(object sender, EventArgs e)
+        private void MealButton_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Popups.MealPopup(foodManager));
-
-            // TODO: maybe use this instead, after it gets fixed in .NET 6.0
-            /*
-            var newWindow = new Window
-            {
-                Page = new Popups.MealPopup(foodManager)
-            };
-            Application.Current.OpenWindow(newWindow);
-            */
+            WindowManager.Instance.OpenWindow(WindowTypes.Meal, new Popups.MealPopup(foodManager), true);
         }
 
-        private async void InsulinButton_Clicked(object sender, EventArgs e)
+        private void InsulinButton_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Popups.InsulinPopup(simulationViewModel.Pump));
+            WindowManager.Instance.OpenWindow(WindowTypes.Insulin, new Popups.InsulinPopup(simulationViewModel.Pump), true);
         }
     }
 }

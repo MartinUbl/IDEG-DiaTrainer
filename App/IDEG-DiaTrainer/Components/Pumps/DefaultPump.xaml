@@ -53,6 +53,11 @@
 
             </StackLayout>
 
+
+
+
+
+
             <StackLayout Orientation="Vertical" x:Name="BolusLayout" IsVisible="false" VerticalOptions="End">
                 <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                     <local:PumpKeyboard x:Name="BolusKeyboard" Units="U" />
@@ -63,16 +68,51 @@
                 </StackLayout>
             </StackLayout>
 
+
+
+
+
+
             <StackLayout Orientation="Vertical" x:Name="BolusConfirmLayout" IsVisible="false" VerticalOptions="End">
-                <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="6" RowSpacing="6" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                    <Label Grid.Row="1" Grid.Column="0" Text="Current IG" FontSize="Subtitle" />
-                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding CurrentIG, StringFormat='{0:0.0}'}" FontSize="Subtitle" TextColor="White" />
-                    <Label Grid.Row="0" Grid.Column="0" Text="Bolus amount" FontSize="Subtitle" />
-                    <Label Grid.Row="0" Grid.Column="1" BindingContext="{x:Reference BolusKeyboard}" Text="{Binding Path=viewModel.TextValue, StringFormat='{}{0} U'}" FontSize="Subtitle" TextColor="White" />
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="6" RowSpacing="6" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Label Grid.Row="0" Grid.Column="0" Padding="8" Text="Bolus amount" FontSize="Subtitle" />
+                    <Label Grid.Row="0" Grid.Column="1" Padding="8" BindingContext="{x:Reference BolusKeyboard}" Text="{Binding Path=viewModel.TextValue, StringFormat='{}{0} U'}" FontSize="Subtitle" TextColor="White" HorizontalTextAlignment="End" HorizontalOptions="FillAndExpand" />
+                    <Label Grid.Row="1" Grid.Column="0" Padding="8" Text="Current IG" FontSize="Subtitle" />
+                    <Label Grid.Row="1" Grid.Column="1" Padding="8" Text="{Binding CurrentIG, StringFormat='{0:0.0} mmol/L'}" FontSize="Subtitle" TextColor="White" HorizontalTextAlignment="End" HorizontalOptions="FillAndExpand" />
                 </Grid>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="End">
                     <Button x:Name="BolusCancel2Button" Text="Cancel" HorizontalOptions="FillAndExpand" Margin="8,0,4,0" Clicked="BolusCancel2Button_Clicked" />
                     <Button x:Name="BolusConfirm2Button" Text="Click to deliver" HorizontalOptions="FillAndExpand" Margin="4,0,8,0" Clicked="BolusConfirm2Button_Clicked" />
+                </StackLayout>
+            </StackLayout>
+
+
+
+
+            <StackLayout Orientation="Vertical" x:Name="BasalLayout" IsVisible="false" VerticalOptions="End">
+                <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <local:PumpKeyboard x:Name="BasalKeyboard" Units="U/hr" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="End">
+                    <Button x:Name="BasalCancelButton" Text="Cancel" HorizontalOptions="FillAndExpand" Margin="8,0,4,0" Clicked="BasalCancelButton_Clicked" />
+                    <Button x:Name="BasalConfirmButton" Text="Set basal rate" HorizontalOptions="FillAndExpand" Margin="4,0,8,0" Clicked="BasalConfirmButton_Clicked" />
+                </StackLayout>
+            </StackLayout>
+
+
+
+
+
+            <StackLayout Orientation="Vertical" x:Name="BasalConfirmLayout" IsVisible="false" VerticalOptions="End">
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="6" RowSpacing="6" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Label Grid.Row="0" Grid.Column="0" Padding="8" Text="Basal insulin delivery rate" FontSize="Subtitle" />
+                    <Label Grid.Row="0" Grid.Column="1" Padding="8" BindingContext="{x:Reference BasalKeyboard}" Text="{Binding Path=viewModel.TextValue, StringFormat='{}{0} U/hr'}" FontSize="Subtitle" TextColor="White" HorizontalTextAlignment="End" HorizontalOptions="FillAndExpand"/>
+                    <Label Grid.Row="1" Grid.Column="0" Padding="8" Text="Current IG" FontSize="Subtitle" />
+                    <Label Grid.Row="1" Grid.Column="1" Padding="8" Text="{Binding CurrentIG, StringFormat='{0:0.0} mmol/L'}" FontSize="Subtitle" TextColor="White" HorizontalTextAlignment="End" HorizontalOptions="FillAndExpand"/>
+                </Grid>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="End">
+                    <Button x:Name="BasalCancel2Button" Text="Cancel" HorizontalOptions="FillAndExpand" Margin="8,0,4,0" Clicked="BasalCancel2Button_Clicked" />
+                    <Button x:Name="BasalConfirm2Button" Text="Click to set" HorizontalOptions="FillAndExpand" Margin="4,0,8,0" Clicked="BasalConfirm2Button_Clicked" />
                 </StackLayout>
             </StackLayout>
 

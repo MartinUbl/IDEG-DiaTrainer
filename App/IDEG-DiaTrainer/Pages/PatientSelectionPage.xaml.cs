@@ -46,7 +46,7 @@ namespace IDEG_DiaTrainer.Pages
             // TODO: load patients from file
             PatientList = new ObservableCollection<PatientRecord>();
             for (int i = 0; i < 10; i++)
-                PatientList.Add(new PatientRecord() { Name = "Patient " + (i + 1).ToString(), Id = i, Age = 35, Diabetes = Enums.DiabetesType.Type1 });
+                PatientList.Add(new PatientRecord() { Name = "Patient " + (i + 1).ToString(), Id = i, Age = 35+i, Diabetes = Enums.DiabetesType.Type1 });
 
             SelectionViewModel.SelectedPatient = PatientList[0];
 
@@ -65,13 +65,12 @@ namespace IDEG_DiaTrainer.Pages
             };
         }
 
-        public /*async*/ void OnContinueButtonClicked(object sender, EventArgs args)
+        public async void OnContinueButtonClicked(object sender, EventArgs args)
         {
             if (SelectionViewModel.SelectedPatient == null)
                 return;
 
-            //await Navigation.PushAsync(new Pages.SimulationPage(SelectionViewModel.SelectedPatient.Id));
-            Application.Current.MainPage = new SimulationShell();
+            await Navigation.PushAsync(new Pages.SimulationPage());
         }
     }
 }

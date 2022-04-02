@@ -71,7 +71,7 @@
             Text="Continue"
             IsEnabled="false"
             FontAttributes="Bold"
-            HorizontalOptions="{OnPlatform Android='FillAndExpand',iOS='FillAndExpand',UWP='FillAndExpand',WPF='FillAndExpand'}"
+            HorizontalOptions="{OnPlatform Android='FillAndExpand',iOS='FillAndExpand',UWP='FillAndExpand',WinUI='FillAndExpand'}"
             VerticalOptions="End"
             SemanticProperties.Hint=""
             Clicked="OnContinueButtonClicked"

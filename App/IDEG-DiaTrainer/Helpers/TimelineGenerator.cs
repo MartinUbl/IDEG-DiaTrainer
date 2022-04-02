@@ -28,7 +28,7 @@ namespace IDEG_DiaTrainer.Helpers
         // schedule for this timeline
         public DailySchedule Schedule { get; set; } = DailySchedule.BuildDefault();
 
-        public void Draw(ICanvas canvas, RectangleF rect)
+        public void Draw(ICanvas canvas, RectF rect)
         {
             canvas.Font = TimelineFont;
             canvas.FontColor = (Color)App.Current.Resources["PrimaryColor"];
@@ -44,7 +44,7 @@ namespace IDEG_DiaTrainer.Helpers
             canvas.DrawRectangle(rect);
 
             // basic timeline rectangle - the whole strip fits into this rectangle, excluding arrow and texts
-            RectangleF tlRect = new RectangleF(StripPadding, /*rect.Height / 3.0f - StripHeight / 4.0f*/14.0f, rect.Width - 2.0f * StripPadding, StripHeight);
+            RectF tlRect = new RectF(StripPadding, /*rect.Height / 3.0f - StripHeight / 4.0f*/14.0f, rect.Width - 2.0f * StripPadding, StripHeight);
 
             float minuteWidth = tlRect.Width / (24.0f * 60.0f); // how wide is one minute?
 

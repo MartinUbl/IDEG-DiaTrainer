@@ -4,8 +4,6 @@ using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using System;
-using Windows.ApplicationModel;
-using Windows.UI.ViewManagement;
 using WinRT.Interop;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -35,7 +33,7 @@ namespace IDEG_DiaTrainer.WinUI
 
             Microsoft.Maui.Essentials.Platform.OnLaunched(args);
 
-            var currentWindow = Application.Windows[0].Handler.NativeView;
+            var currentWindow = Application.Windows[0].Handler.PlatformView;
             IntPtr _windowHandle = WindowNative.GetWindowHandle(currentWindow);
             var windowId = Win32Interop.GetWindowIdFromWindow(_windowHandle);
 

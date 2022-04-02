@@ -149,7 +149,7 @@ namespace IDEG_DiaTrainer.Controllers
 
             Exec.RegisterCallback(ExecuteCallback);
             // TODO: differentiate between patients, use different configs with different models (and different parameters)
-            if (!Exec.Start("config-s2013"))
+            if (!Exec.Start("config-gct2"))
                 return false;
 
             // inspect drawing filter
@@ -166,6 +166,7 @@ namespace IDEG_DiaTrainer.Controllers
             // subscribe for controlling messages
             MessagingCenter.Subscribe<InjectCarbsMessage>(this, InjectCarbsMessage.Name, ProcessInjectCarbsMessage);
             MessagingCenter.Subscribe<InjectBolusMessage>(this, InjectBolusMessage.Name, ProcessInjectBolusMessage);
+            MessagingCenter.Subscribe<InjectBasalMessage>(this, InjectBasalMessage.Name, ProcessInjectBasalMessage);
 
             return true;
         }
@@ -228,6 +229,21 @@ namespace IDEG_DiaTrainer.Controllers
             InjectLevelEvent(
                 scgms.SignalGuids.RequestedInsulinBolus,
                 msg.BolusAmount,
+                msg.When);
+        }
+
+        /// <summary>
+        /// Inject basal rate setting message callback
+        /// </summary>
+        /// <param name="msg"></param>
+        public void ProcessInjectBasalMessage(InjectBasalMessage msg)
+        {
+            if (msg.BasalRate < 0)
+                return;
+
+            InjectLevelEvent(
+                scgms.SignalGuids.RequestedInsulinBasalRate,
+                msg.BasalRate,
                 msg.When);
         }
     }

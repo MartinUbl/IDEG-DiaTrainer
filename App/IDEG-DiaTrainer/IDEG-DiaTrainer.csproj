@@ -60,6 +60,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Config\config-gct2.ini" />
 	  <None Remove="Config\config-s2013.ini" />
 	  <None Remove="Platforms\Windows\lib\x64\filters\approx.dll" />
 	  <None Remove="Platforms\Windows\lib\x64\filters\controllers.dll" />
@@ -101,6 +102,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Config\config-gct2.ini">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </EmbeddedResource>
 	  <EmbeddedResource Include="Config\config-s2013.ini">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </EmbeddedResource>
@@ -160,18 +164,16 @@
 
 	<ItemGroup>
 	  <PackageReference Include="CsvHelper" Version="27.2.1" />
-	  <PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.200-preview.13.935" />
-	  <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="6.0.200-preview.13.935" />
-	  <PackageReference Include="SkiaSharp" Version="2.88.0-preview.187" />
+	  <PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.200-preview.14.1092" />
+	  <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="6.0.200-preview.14.1092" />
+	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.1" />
+	  <PackageReference Include="SkiaSharp" Version="2.88.0-preview.232" />
 	  <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
-	  <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.0-preview.187" />
-	  <PackageReference Include="SkiaSharp.Views.Maui.Core" Version="2.88.0-preview.187" />
+	  <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.0-preview.232" />
+	  <PackageReference Include="SkiaSharp.Views.Maui.Core" Version="2.88.0-preview.232" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pages\SimulationShell.xaml.cs">
-	    <DependentUpon>SimulationShell.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Pages\Popups\InsulinPopup.xaml.cs">
 	    <DependentUpon>InsulinPopup.xaml</DependentUpon>
 	  </Compile>
@@ -188,9 +190,6 @@
 	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\Pumps\DefaultPump.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\SimulationShell.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\PatientSelectionPage.xaml">
