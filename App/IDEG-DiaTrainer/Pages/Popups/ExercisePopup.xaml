@@ -1,0 +1,12 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IDEG_DiaTrainer.Pages.Popups.ExercisePopup"
+             BackgroundColor="White">
+    <StackLayout>
+        <ScrollView Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout x:Name="ExerciseList" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                <!-- the code will insert blocks here -->
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</ContentPage>

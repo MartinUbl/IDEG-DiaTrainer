@@ -1,0 +1,44 @@
+﻿<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:conv="clr-namespace:IDEG_DiaTrainer.Helpers.Converters"
+      x:Class="IDEG_DiaTrainer.Helpers.ExerciseBlock"
+      Padding="16">
+
+    <Grid.Resources>
+        <conv:ExerciseIntensityConverter x:Key="IntensityConv" />
+    </Grid.Resources>
+
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="1*" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <Image Grid.Row="0" Grid.Column="0" HorizontalOptions="Start" WidthRequest="64" HeightRequest="64" Aspect="AspectFit" InputTransparent="True" x:Name="ExerciseImage" />
+
+    <StackLayout Orientation="Vertical" Grid.Row="0" Grid.Column="1" HorizontalOptions="StartAndExpand" VerticalOptions="Center">
+        <Label Text="Activity" />
+        <Label FontAttributes="Bold" FontSize="Subtitle" Text="{Binding Record.Name}" />
+    </StackLayout>
+    <StackLayout Orientation="Vertical" Grid.Row="0" Grid.Column="2" HorizontalOptions="StartAndExpand" VerticalOptions="Center">
+        <Label Text="Intensity" />
+        <StackLayout Orientation="Horizontal" Spacing="8">
+            <Label FontAttributes="Bold" Text="{Binding Record.Intensity}" />
+            <Label Text="{Binding Record.Intensity, Converter={StaticResource IntensityConv}, StringFormat='({0})'}" />
+        </StackLayout>
+    </StackLayout>
+    <StackLayout Orientation="Vertical" Grid.Row="0" Grid.Column="3" HorizontalOptions="StartAndExpand" VerticalOptions="Center">
+        <Label Text="Duration" />
+        <StackLayout Orientation="Horizontal" Spacing="8">
+            <Entry FontSize="Subtitle" Text="{Binding Record.RecommendedDuration, Mode=OneTime}" x:Name="DurationEntry" />
+            <Label Text="minutes" />
+        </StackLayout>
+    </StackLayout>
+    <Button Grid.Row="0" Grid.Column="4" x:Name="ConfirmButton" HorizontalOptions="End" VerticalOptions="Center" Text="Exercise" Clicked="ConfirmButton_Clicked" />
+    
+</Grid>

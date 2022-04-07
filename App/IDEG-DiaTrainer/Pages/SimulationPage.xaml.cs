@@ -93,6 +93,9 @@ namespace IDEG_DiaTrainer.Pages
         // food manager - loads and manages known food
         private Helpers.FoodManager foodManager;
 
+        // exercise manager - loads and manages known exercise
+        private Helpers.ExerciseManager exerciseManager;
+
         // viewmodel instance
         private SimulationViewModel simulationViewModel = new SimulationViewModel();
 
@@ -119,6 +122,10 @@ namespace IDEG_DiaTrainer.Pages
             // initialize food manager
             foodManager = new Helpers.FoodManager();
             foodManager.Load();
+
+            // initialize exercise manager
+            exerciseManager = new Helpers.ExerciseManager();
+            exerciseManager.Load();
 
             // subscribe to messages from controller
             MessagingCenter.Subscribe<Messages.ValueAvailableMessage>(this, Messages.ValueAvailableMessage.Name, OnValueAvailable);
@@ -249,6 +256,11 @@ namespace IDEG_DiaTrainer.Pages
         private void InsulinButton_Clicked(object sender, EventArgs e)
         {
             WindowManager.Instance.OpenWindow(WindowTypes.Insulin, new Popups.InsulinPopup(simulationViewModel.Pump), true);
+        }
+
+        private void ExerciseButton_Clicked(object sender, EventArgs e)
+        {
+            WindowManager.Instance.OpenWindow(WindowTypes.Exercise, new Popups.ExercisePopup(exerciseManager), true);
         }
     }
 }

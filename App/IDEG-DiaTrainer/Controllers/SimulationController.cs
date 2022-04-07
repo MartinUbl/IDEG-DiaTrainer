@@ -31,6 +31,17 @@ namespace IDEG_DiaTrainer.Controllers
         // is the simulation paused?
         private bool Paused = false;
 
+        private class CancellationEvent
+        {
+            public Guid SignalId { get; set; }
+
+            public double CancelValue { get; set; }
+
+            public DateTime CancelTime { get; set; }
+        }
+
+        private List<CancellationEvent> CancellationEvents = new List<CancellationEvent>();
+
         public SimulationController()
         {
             //
@@ -57,6 +68,18 @@ namespace IDEG_DiaTrainer.Controllers
             }
         }
 
+        private long ExtractUnixTimestamp(DateTime? when = null)
+        {
+            DateTime since = when.HasValue ? when.Value : StartTime;
+
+            return (long)(since.Subtract(new DateTime(1970, 1, 1)) ).TotalSeconds;
+        }
+
+        private long GetCurrentSimulationUnixTimestamp(bool adjusted = true)
+        {
+            return ExtractUnixTimestamp() + 5 * 60 * SimulationTimeCounter + (adjusted ? 1 : 0);
+        }
+
         /// <summary>
         /// Injects a level event into scgms execution
         /// </summary>
@@ -71,11 +94,23 @@ namespace IDEG_DiaTrainer.Controllers
             evt.signalId = signalId;
             evt.level = level;
             evt.deviceTime = when.HasValue ?
-                scgms.Utils.UnixTimeToRatTime((long)(when.Value.Subtract(new DateTime(1970, 1, 1))).TotalSeconds)
+                scgms.Utils.UnixTimeToRatTime(ExtractUnixTimestamp(when))
                 :
-                // no date set - use offset from base time
-                scgms.Utils.UnixTimeToRatTime((long)(StartTime.Subtract(new DateTime(1970, 1, 1))).TotalSeconds + 5 * 60 * SimulationTimeCounter + 1);
+                // no date set - use "current" simulation time
+                scgms.Utils.UnixTimeToRatTime(GetCurrentSimulationUnixTimestamp());
             Exec.InjectEvent(evt);
+        }
+
+        private void InjectLevelEventWithCancellation(Guid signalId, double level, DateTime? when = null, int cancelAfterXSeconds = 5*60)
+        {
+            DateTime cancelAt = when.HasValue ? when.Value : StartTime;
+            if (!when.HasValue)
+                cancelAt = cancelAt.AddSeconds(5 * 60 * SimulationTimeCounter); // add simulation offset if not explicitly specified
+            cancelAt = cancelAt.AddSeconds(cancelAfterXSeconds);
+
+            InjectLevelEvent(signalId, level, when);
+
+            CancellationEvents.Add(new CancellationEvent { SignalId = signalId, CancelValue = 0.0, CancelTime = cancelAt });
         }
 
         /// <summary>
@@ -86,6 +121,17 @@ namespace IDEG_DiaTrainer.Controllers
         {
             if (Paused)
                 return true;
+
+            // cancel temporary events
+            DateTime currentTime = StartTime.AddSeconds(5 * 60 * (SimulationTimeCounter + 1));
+            for (int i = CancellationEvents.Count - 1; i >= 0; i--)
+            {
+                if (CancellationEvents[i].CancelTime < currentTime)
+                {
+                    InjectLevelEvent(CancellationEvents[i].SignalId, CancellationEvents[i].CancelValue, CancellationEvents[i].CancelTime);
+                    CancellationEvents.RemoveAt(i);
+                }
+            }
 
             // insert "dummy" signal to be synchronized onto
             InjectLevelEvent(scgms.SignalGuids.Synchronization, 0.0);
@@ -110,7 +156,7 @@ namespace IDEG_DiaTrainer.Controllers
             evt.eventCode = scgms.EventCode.Information;
             evt.segmentId = SimSegmentId;
             evt.infoString = "DrawingResize=" + (int)type + ",Width=" + width + ",Height=" + height;
-            evt.deviceTime = scgms.Utils.UnixTimeToRatTime((long)(StartTime.Subtract(new DateTime(1970, 1, 1))).TotalSeconds + 5 * 60 * SimulationTimeCounter + 1);
+            evt.deviceTime = scgms.Utils.UnixTimeToRatTime(GetCurrentSimulationUnixTimestamp());
             Exec.InjectEvent(evt);
         }
 
@@ -161,12 +207,15 @@ namespace IDEG_DiaTrainer.Controllers
             }
 
             // start the tick timer
+#pragma warning disable CS0618 // Type or member is obsolete
             Device.StartTimer(TimeSpan.FromMilliseconds(1000), TimerCallback);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             // subscribe for controlling messages
             MessagingCenter.Subscribe<InjectCarbsMessage>(this, InjectCarbsMessage.Name, ProcessInjectCarbsMessage);
             MessagingCenter.Subscribe<InjectBolusMessage>(this, InjectBolusMessage.Name, ProcessInjectBolusMessage);
             MessagingCenter.Subscribe<InjectBasalMessage>(this, InjectBasalMessage.Name, ProcessInjectBasalMessage);
+            MessagingCenter.Subscribe<InjectExerciseMessage>(this, InjectExerciseMessage.Name, ProcessInjectExerciseMessage);
 
             return true;
         }
@@ -245,6 +294,25 @@ namespace IDEG_DiaTrainer.Controllers
                 scgms.SignalGuids.RequestedInsulinBasalRate,
                 msg.BasalRate,
                 msg.When);
+        }
+
+        public void ProcessInjectExerciseMessage(InjectExerciseMessage msg)
+        {
+            if (msg.Intensity <= 0 || msg.Intensity > 1.0)
+                return;
+
+            // remove all exercise cancellations
+            for (int i = CancellationEvents.Count - 1; i >= 0; i--)
+            {
+                if (CancellationEvents[i].SignalId == scgms.SignalGuids.PhysicalActivity)
+                    CancellationEvents.RemoveAt(i);
+            }
+
+            InjectLevelEventWithCancellation(
+                scgms.SignalGuids.PhysicalActivity,
+                msg.Intensity,
+                msg.When,
+                msg.CancelAfterSeconds);
         }
     }
 }

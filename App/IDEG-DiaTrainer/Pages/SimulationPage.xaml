@@ -41,6 +41,9 @@
                 </Image.GestureRecognizers>
             </Image>
             <Image Source="jogging.png" Style="{StaticResource ImgButtonUI}">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="ExerciseButton_Clicked"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
             </Image>
             <Image Source="lightbulb.png" Style="{StaticResource ImgButtonUI}">
             </Image>

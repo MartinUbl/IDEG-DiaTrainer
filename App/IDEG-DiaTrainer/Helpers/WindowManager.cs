@@ -11,6 +11,7 @@ namespace IDEG_DiaTrainer.Helpers
     {
         Meal,
         Insulin,
+        Exercise,
     }
 
     public class WindowManager
@@ -29,18 +30,37 @@ namespace IDEG_DiaTrainer.Helpers
         public Window OpenWindow(WindowTypes type, Page page, bool navigation = false)
         {
             if (ActiveWindows.ContainsKey(type))
+            {
                 Application.Current.CloseWindow(ActiveWindows[type]);
+                ActiveWindows.Remove(type);
+            }
 
             var newWindow = new Window
             {
                 Page = navigation ? new NavigationPage(page) : page,
             };
 
-            ActiveWindows.Add(type, newWindow);
+            if (newWindow != null)
+            {
+                newWindow.Destroying += NewWindow_Destroying;
 
-            Application.Current.OpenWindow(newWindow);
+                ActiveWindows.Add(type, newWindow);
+                Application.Current.OpenWindow(newWindow);
+            }
 
             return newWindow;
+        }
+
+        private void NewWindow_Destroying(object sender, EventArgs e)
+        {
+            foreach (var win in ActiveWindows)
+            {
+                if (win.Value == sender)
+                {
+                    ActiveWindows.Remove(win.Key);
+                    return;
+                }
+            }
         }
 
         public void CloseWindow(WindowTypes type)

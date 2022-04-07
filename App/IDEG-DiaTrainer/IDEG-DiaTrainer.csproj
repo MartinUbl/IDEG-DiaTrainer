@@ -75,6 +75,10 @@
 	  <None Remove="Platforms\Windows\lib\x64\interop-inspector.dll" />
 	  <None Remove="Platforms\Windows\lib\x64\scgms.dll" />
 	  <None Remove="Resources\appicon.png" />
+	  <None Remove="Resources\Content\Exercise\exercise.csv" />
+	  <None Remove="Resources\Content\Exercise\img\run.png" />
+	  <None Remove="Resources\Content\Exercise\img\sprint.png" />
+	  <None Remove="Resources\Content\Exercise\img\walk.png" />
 	  <None Remove="Resources\Content\Food\food.csv" />
 	  <None Remove="Resources\Content\Food\img\banan.jpg" />
 	  <None Remove="Resources\Content\Food\img\bolonske-spagety.jpg" />
@@ -95,6 +99,11 @@
 		<!-- Required - WinUI does not yet have buildTransitive for everything -->
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0" />
 		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.0.30" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Remove="Components\ExerciseBlock.xaml" />
+	  <Page Remove="Pages\Popups\ExercisePopup.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -144,6 +153,10 @@
 	  <EmbeddedResource Include="Platforms\Windows\lib\x64\scgms.dll">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Exercise\exercise.csv" />
+	  <EmbeddedResource Include="Resources\Content\Exercise\img\run.png" />
+	  <EmbeddedResource Include="Resources\Content\Exercise\img\sprint.png" />
+	  <EmbeddedResource Include="Resources\Content\Exercise\img\walk.png" />
 	  <EmbeddedResource Include="Resources\Content\Food\food.csv">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </EmbeddedResource>
@@ -183,6 +196,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Components\ExerciseBlock.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\FoodBlock.xaml">
 	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 	  </MauiXaml>
@@ -194,6 +210,9 @@
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\PatientSelectionPage.xaml">
 	    <Generator></Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Popups\ExercisePopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Popups\InsulinPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
