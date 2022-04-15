@@ -30,7 +30,7 @@
                 HorizontalOptions="FillAndExpand" />
 
         <ListView Grid.Row="1" Grid.Column="0" x:Name="PatientListView"
-                  ItemsSource="{Binding Source={x:Reference PatientSelectionPage}, Path=PatientList}"
+                  ItemsSource="{Binding PatientList}"
                   VerticalOptions="FillAndExpand">
 
             <ListView.ItemTemplate>

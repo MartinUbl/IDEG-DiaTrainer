@@ -31,7 +31,7 @@ namespace IDEG_DiaTrainer.WinUI
         {
             base.OnLaunched(args);
 
-            Microsoft.Maui.Essentials.Platform.OnLaunched(args);
+            Microsoft.Maui.ApplicationModel.Platform.OnLaunched(args);
 
             var currentWindow = Application.Windows[0].Handler.PlatformView;
             IntPtr _windowHandle = WindowNative.GetWindowHandle(currentWindow);

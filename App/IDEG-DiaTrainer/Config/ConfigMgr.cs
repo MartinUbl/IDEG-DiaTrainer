@@ -35,7 +35,7 @@ namespace IDEG_DiaTrainer.Config
             // substitute DataDir with actual application directory
             // this is there to ensure the paths are safe for every environment - .NET is able to offer a safe directory
             // but we cannot request it directly from C++ code
-            text = text.Replace("{{DataDir}}", Microsoft.Maui.Essentials.FileSystem.AppDataDirectory);
+            text = text.Replace("{{DataDir}}", Microsoft.Maui.Storage.FileSystem.AppDataDirectory);
 
             return text;
         }

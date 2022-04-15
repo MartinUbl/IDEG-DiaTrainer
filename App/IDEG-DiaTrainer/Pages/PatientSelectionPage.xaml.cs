@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using IDEG_DiaTrainer.Helpers;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Essentials;
 
 namespace IDEG_DiaTrainer.Pages
 {
