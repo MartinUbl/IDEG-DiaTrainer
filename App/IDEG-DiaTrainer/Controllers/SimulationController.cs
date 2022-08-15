@@ -207,9 +207,9 @@ namespace IDEG_DiaTrainer.Controllers
             }
 
             // start the tick timer
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0612,CS0618 // Type or member is obsolete
             Device.StartTimer(TimeSpan.FromMilliseconds(1000), TimerCallback);
-#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore CS0612,CS0618 // Type or member is obsolete
 
             // subscribe for controlling messages
             MessagingCenter.Subscribe<InjectCarbsMessage>(this, InjectCarbsMessage.Name, ProcessInjectCarbsMessage);

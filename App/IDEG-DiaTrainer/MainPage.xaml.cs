@@ -48,5 +48,10 @@ namespace IDEG_DiaTrainer
 		{
 			await Navigation.PushAsync(new Pages.PatientSelectionPage());
 		}
+
+		public async void OnPersonalizedModeClicked(object sender, EventArgs args)
+		{
+			await Navigation.PushAsync(new Pages.PatientPersonalizationPage());
+		}
 	}
 }

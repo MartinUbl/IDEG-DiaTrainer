@@ -20,8 +20,6 @@
 
         <Label 
                 Text="Please, select your patient"
-                SemanticProperties.HeadingLevel="Level1"
-                SemanticProperties.Description="Patient selection"
                 FontSize="18"
                 Grid.Row="0"
                 Grid.Column="0" Grid.ColumnSpan="2"
@@ -71,7 +69,7 @@
             Text="Continue"
             IsEnabled="false"
             FontAttributes="Bold"
-            HorizontalOptions="{OnPlatform Android='FillAndExpand',iOS='FillAndExpand',UWP='FillAndExpand',WinUI='FillAndExpand'}"
+            HorizontalOptions="FillAndExpand"
             VerticalOptions="End"
             SemanticProperties.Hint=""
             Clicked="OnContinueButtonClicked"

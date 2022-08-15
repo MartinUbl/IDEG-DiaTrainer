@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IDEG_DiaTrainer.Pages.PatientPersonalizationPage"
+             Title="Patient profile personalization">
+    <StackLayout Padding="16" Spacing="8">
+        <Label Text="Load profile"
+               FontSize="Title" />
+
+        <StackLayout>
+            <Label Text="Not implemented yet..." />
+        </StackLayout>
+
+        <Label Text="Create profile"
+               FontSize="Title" />
+
+        <StackLayout Orientation="Vertical">
+            <Label Text="Profile name" FontSize="Subtitle" />
+            <Entry x:Name="ProfileNameEntry" />
+
+            <Label Text="Age" FontSize="Subtitle" />
+            <Picker x:Name="AgePicker">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>18-24</x:String>
+                        <x:String>25-34</x:String>
+                        <x:String>35-44</x:String>
+                        <x:String>45-54</x:String>
+                        <x:String>55-64</x:String>
+                        <x:String>65+</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <Label Text="Sensor and pump data file" FontSize="Subtitle" />
+            <StackLayout Orientation="Horizontal">
+                <Button x:Name="SelectDataButton" Text="Choose a file" Clicked="SelectDataButton_Clicked" />
+                <Label x:Name="SelectedFileLabel" Text="No file selected..." />
+            </StackLayout>
+
+            <Label Text="Please note, that personalization may take a long time" />
+            <Button x:Name="PersonalizeButton" Text="Create profile" Clicked="PersonalizeButton_Clicked" />
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

@@ -56,6 +56,13 @@
                     SemanticProperties.Hint=""
                     Clicked="OnFreeRunningClicked"
                     />
+
+                <Button 
+                    Text="Personalized mode"
+                    FontAttributes="Bold"
+                    SemanticProperties.Hint=""
+                    Clicked="OnPersonalizedModeClicked"
+                    />
             </StackLayout>
 
             <StackLayout Orientation="Vertical" Grid.Row="5" HorizontalOptions="CenterAndExpand">

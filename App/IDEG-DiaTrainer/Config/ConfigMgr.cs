@@ -18,7 +18,7 @@ namespace IDEG_DiaTrainer.Config
         /// </summary>
         /// <param name="plainName">filename of config (without path and extension)</param>
         /// <returns></returns>
-        public static string ReadConfig(string plainName)
+        public static string ReadConfig(string plainName, Dictionary<string, string> symbols = null)
         {
             // retrieve config resource stream
             var assembly = typeof(ConfigMgr).GetTypeInfo().Assembly;
@@ -36,6 +36,12 @@ namespace IDEG_DiaTrainer.Config
             // this is there to ensure the paths are safe for every environment - .NET is able to offer a safe directory
             // but we cannot request it directly from C++ code
             text = text.Replace("{{DataDir}}", Microsoft.Maui.Storage.FileSystem.AppDataDirectory);
+
+            if (symbols != null)
+            {
+                foreach (var pair in symbols)
+                    text = text.Replace("{{"+ pair.Key + "}}", pair.Value);
+            }
 
             return text;
         }

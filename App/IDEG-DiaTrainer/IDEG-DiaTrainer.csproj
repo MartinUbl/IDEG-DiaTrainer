@@ -49,12 +49,6 @@
 		<MauiFont Include="Resources\Fonts\*" />
 	</ItemGroup>
 
-	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
-		<!-- Required - WinUI does not yet have buildTransitive for everything -->
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0" />
-		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.0.30" />
-	</ItemGroup>
-
 	<ItemGroup>
 	  <MauiImage Remove="Resources\Images\dotnet_bot.svg" />
 	</ItemGroup>
@@ -95,14 +89,9 @@
 	  <None Remove="Resources\Images\syringe.png" />
 	</ItemGroup>
 
-	<ItemGroup Condition="$(TargetFramework.Contains(‘-windows’))">
-		<!-- Required - WinUI does not yet have buildTransitive for everything -->
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0" />
-		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.0.30" />
-	</ItemGroup>
-
 	<ItemGroup>
 	  <Page Remove="Components\ExerciseBlock.xaml" />
+	  <Page Remove="Pages\PatientPersonalizationPage.xaml" />
 	  <Page Remove="Pages\Popups\ExercisePopup.xaml" />
 	</ItemGroup>
 
@@ -177,14 +166,14 @@
 
 	<ItemGroup>
 	  <PackageReference Include="CsvHelper" Version="27.2.1" />
-	  <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.1" />
-	  <PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.300-rc.1.1215" />
-	  <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="6.0.300-rc.1.1215" />
-	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.0-preview1" />
-	  <PackageReference Include="SkiaSharp" Version="2.88.0-preview.232" />
+	  <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.3.1" />
+	  <PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.300-rc.3.1336" />
+	  <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="6.0.300-rc.3.1336" />
+	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.0-preview3" />
+	  <PackageReference Include="SkiaSharp" Version="2.88.0-preview.266" />
 	  <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
-	  <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.0-preview.232" />
-	  <PackageReference Include="SkiaSharp.Views.Maui.Core" Version="2.88.0-preview.232" />
+	  <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.0-preview.266" />
+	  <PackageReference Include="SkiaSharp.Views.Maui.Core" Version="2.88.0-preview.266" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -207,6 +196,9 @@
 	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\Pumps\DefaultPump.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\PatientPersonalizationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\PatientSelectionPage.xaml">
