@@ -41,12 +41,17 @@ namespace IDEG_DiaTrainer.Pages
 
         private void PersonalizeButton_Clicked(object sender, EventArgs e)
         {
+            if (SelectedFileName.Length == 0)
+                return;
+
             string BaseFileName = Path.GetFileName(SelectedFileName);
             File.Copy(SelectedFileName, Path.Combine(Microsoft.Maui.Storage.FileSystem.AppDataDirectory, BaseFileName), true);
 
             string cfg = ConfigMgr.ReadConfig("config-extracted", new System.Collections.Generic.Dictionary<string, string>() {
                 { "UploadedFilename", BaseFileName }
             });
+
+            // TODO: optimize model parameters (replay gets cached, so its fine to optimize the config as-is), extract them from config, store them for use in simulation
         }
     }
 

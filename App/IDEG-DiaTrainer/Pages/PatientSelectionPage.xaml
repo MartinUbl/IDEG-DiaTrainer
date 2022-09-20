@@ -2,7 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:conv="clr-namespace:IDEG_DiaTrainer.Helpers.Converters"
              x:Class="IDEG_DiaTrainer.Pages.PatientSelectionPage"
-             Title="Patient selection"
+             NavigationPage.HasBackButton="True"
+             NavigationPage.HasNavigationBar="True"
+             Title="     Patient selection"
              BackgroundColor="{DynamicResource SecondaryColor}">
 
     <ContentPage.Resources>

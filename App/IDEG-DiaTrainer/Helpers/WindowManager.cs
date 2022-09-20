@@ -25,13 +25,19 @@ namespace IDEG_DiaTrainer.Helpers
             }
         }
 
-        private Dictionary<WindowTypes, Window> ActiveWindows = new Dictionary<WindowTypes, Window>();
+        private class WindowEntry
+        {
+            public Window window { get; set; }
+            public Action onClose { get; set; }
+        }
 
-        public Window OpenWindow(WindowTypes type, Page page, bool navigation = false)
+        private Dictionary<WindowTypes, WindowEntry> ActiveWindows = new Dictionary<WindowTypes, WindowEntry>();
+
+        public Window OpenWindow(WindowTypes type, Page page, bool navigation = false, Action onCloseAction = null)
         {
             if (ActiveWindows.ContainsKey(type))
             {
-                Application.Current.CloseWindow(ActiveWindows[type]);
+                Application.Current.CloseWindow(ActiveWindows[type].window);
                 ActiveWindows.Remove(type);
             }
 
@@ -44,7 +50,7 @@ namespace IDEG_DiaTrainer.Helpers
             {
                 newWindow.Destroying += NewWindow_Destroying;
 
-                ActiveWindows.Add(type, newWindow);
+                ActiveWindows.Add(type, new WindowEntry { window = newWindow, onClose = onCloseAction });
                 Application.Current.OpenWindow(newWindow);
             }
 
@@ -55,8 +61,11 @@ namespace IDEG_DiaTrainer.Helpers
         {
             foreach (var win in ActiveWindows)
             {
-                if (win.Value == sender)
+                if (win.Value.window == sender)
                 {
+                    if (win.Value.onClose != null)
+                        win.Value.onClose();
+
                     ActiveWindows.Remove(win.Key);
                     return;
                 }
@@ -67,7 +76,7 @@ namespace IDEG_DiaTrainer.Helpers
         {
             if (ActiveWindows.ContainsKey(type))
             {
-                Application.Current.CloseWindow(ActiveWindows[type]);
+                Application.Current.CloseWindow(ActiveWindows[type].window);
                 ActiveWindows.Remove(type);
             }
         }

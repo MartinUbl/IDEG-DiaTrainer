@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -99,6 +100,15 @@ namespace IDEG_DiaTrainer.Pages
         // viewmodel instance
         private SimulationViewModel simulationViewModel = new SimulationViewModel();
 
+        // timer for starting the tutorial (so it gets correctly deferred after UI initialization)
+        private System.Timers.Timer TutorialStartTimer;
+
+        // list of tutorial records
+        private List<TutorialRecord> Tutorial;
+
+        // current position in tutorial
+        private int TutorialPosition = -1;
+
         // stored drawing - glucose graph
         private string StoredDrawing_Glucose = "<svg version=\"1.1\" width=\"300\" height=\"200\" xmlns=\"http://www.w3.org/2000/svg\"><text x=\"40\" y=\"130em\" font-size=\"120em\">Loading...</text></svg>";
         // stored drawing - insulin graph
@@ -117,7 +127,7 @@ namespace IDEG_DiaTrainer.Pages
 
             // initialize controller
             controller = new Controllers.SimulationController();
-            controller.Start(-1); // TODO
+            controller.Start(-1); // TODO: patient identifier
 
             // initialize food manager
             foodManager = new Helpers.FoodManager();
@@ -130,6 +140,88 @@ namespace IDEG_DiaTrainer.Pages
             // subscribe to messages from controller
             MessagingCenter.Subscribe<Messages.ValueAvailableMessage>(this, Messages.ValueAvailableMessage.Name, OnValueAvailable);
             MessagingCenter.Subscribe<Messages.DrawingAvailableMessage>(this, Messages.DrawingAvailableMessage.Name, OnDrawingAvailable);
+
+            // load tutorial
+            // TODO: some persistent flag to store, if the user has already gone through the tutorial
+            Tutorial = TutorialManager.Current.GetTutorials("freerunning"); // TODO: disambiguate later, when scenario/personalized mode is finished
+
+            // set timer to start the tutorial
+            TutorialStartTimer = new System.Timers.Timer(1000);
+            TutorialStartTimer.Elapsed += (o,e) => {
+                Dispatcher.Dispatch(() => {
+
+                    // pause simulation
+                    Pause();
+
+                    // load the first entry
+                    LoadTutorialAtPos(0);
+
+                    // fade in the overlay
+                    SimulationModalOverlay.Opacity = 0;
+                    SimulationModalOverlay.IsVisible = true;
+                    SimulationModalOverlay.FadeTo(0.5, 300);
+                });
+            };
+            TutorialStartTimer.Enabled = true;
+            TutorialStartTimer.AutoReset = false;
+        }
+
+        private void LoadTutorialAtPos(int pos)
+        {
+            var tut = Tutorial[pos];
+
+            var child = FindChildWithTutorialBindName(TutorialInnerLayout, tut.Identifier);
+            if (child != null)
+            {
+                var screenpos = GetScreenCoords(child);
+
+                AbsoluteLayout.SetLayoutBounds(TutorialFrame, new Rect(screenpos.X + child.Width + 5, screenpos.Y - 10, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize));
+                TutorialName.Text = tut.Title;
+                TutorialText.Text = tut.Text;
+                TutorialNextButton.IsVisible = true;
+                TutorialSkipButton.Text = "Skip tutorial";
+                TutorialFrame.IsVisible = true;
+            }
+
+            if (pos >= Tutorial.Count - 1)
+            {
+                TutorialNextButton.IsVisible = false;
+                TutorialSkipButton.Text = "Okay!";
+            }
+
+            TutorialPosition = pos;
+        }
+
+        public static Point GetScreenCoords(VisualElement view)
+        {
+            var result = new Point(view.X, view.Y);
+            while (view.Parent is VisualElement parent)
+            {
+                result = result.Offset(parent.X, parent.Y);
+                view = parent;
+            }
+            return result;
+        }
+
+        public VisualElement FindChildWithTutorialBindName(Layout parent, string name)
+        {
+            foreach (var c in parent)
+            {
+                if (c is BindableObject && c is VisualElement)
+                {
+                    string bindName = Helpers.TutorialExt.GetTutorialBindName((BindableObject)c);
+
+                    if (bindName == name)
+                    {
+                        return (VisualElement)c;
+                    }
+                }
+
+                if (c is Layout)
+                    return FindChildWithTutorialBindName((Layout)c, name);
+            }
+
+            return null;
         }
 
         private void OnValueAvailable(Messages.ValueAvailableMessage msg)
@@ -250,17 +342,70 @@ namespace IDEG_DiaTrainer.Pages
 
         private void MealButton_Clicked(object sender, EventArgs e)
         {
-            WindowManager.Instance.OpenWindow(WindowTypes.Meal, new Popups.MealPopup(foodManager), true);
+            var prevState = simulationViewModel.IsPaused;
+            Pause();
+
+            SimulationModalOverlay.Opacity = 0;
+            SimulationModalOverlay.IsVisible = true;
+            SimulationModalOverlay.FadeTo(0.5, 300);
+
+            WindowManager.Instance.OpenWindow(WindowTypes.Meal, new Popups.MealPopup(foodManager), true, async () => {
+                if (!prevState)
+                    Resume();
+
+                await SimulationModalOverlay.FadeTo(0.0, 300);
+                SimulationModalOverlay.IsVisible = false;
+            });
         }
 
         private void InsulinButton_Clicked(object sender, EventArgs e)
         {
-            WindowManager.Instance.OpenWindow(WindowTypes.Insulin, new Popups.InsulinPopup(simulationViewModel.Pump), true);
+            var prevState = simulationViewModel.IsPaused;
+            Pause();
+
+            SimulationModalOverlay.Opacity = 0;
+            SimulationModalOverlay.IsVisible = true;
+            SimulationModalOverlay.FadeTo(0.5, 300);
+
+            WindowManager.Instance.OpenWindow(WindowTypes.Insulin, new Popups.InsulinPopup(simulationViewModel.Pump), true, async () => {
+                if (!prevState)
+                    Resume();
+
+                await SimulationModalOverlay.FadeTo(0.0, 300);
+                SimulationModalOverlay.IsVisible = false;
+            });
         }
 
         private void ExerciseButton_Clicked(object sender, EventArgs e)
         {
-            WindowManager.Instance.OpenWindow(WindowTypes.Exercise, new Popups.ExercisePopup(exerciseManager), true);
+            var prevState = simulationViewModel.IsPaused;
+            Pause();
+
+            SimulationModalOverlay.Opacity = 0;
+            SimulationModalOverlay.IsVisible = true;
+            SimulationModalOverlay.FadeTo(0.5, 300);
+
+            WindowManager.Instance.OpenWindow(WindowTypes.Exercise, new Popups.ExercisePopup(exerciseManager), true, async () => {
+                if (!prevState)
+                    Resume();
+
+                await SimulationModalOverlay.FadeTo(0.0, 300);
+                SimulationModalOverlay.IsVisible = false;
+            });
+        }
+
+        private void TutorialNextButton_Clicked(object sender, EventArgs e)
+        {
+            LoadTutorialAtPos(TutorialPosition + 1);
+        }
+
+        private async void TutorialSkipButton_Clicked(object sender, EventArgs e)
+        {
+            TutorialFrame.IsVisible = false;
+            await SimulationModalOverlay.FadeTo(0.0, 300);
+            SimulationModalOverlay.IsVisible = false;
+
+            Resume();
         }
     }
 }

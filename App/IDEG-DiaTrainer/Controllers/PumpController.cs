@@ -74,6 +74,8 @@ namespace IDEG_DiaTrainer.Controllers
             if (msg.SignalId == scgms.SignalGuids.DeliveredInsulinBolus)
             {
                 RemainingInsulin -= msg.Value;
+
+                // stop basal delivery when the insulin reservoir is depleted
                 if (RemainingInsulin == 0)
                     SendBasalRate(0);
             }
@@ -93,6 +95,10 @@ namespace IDEG_DiaTrainer.Controllers
                 double daysNow = scgms.Utils.DateTimeToRatTime(msg.DeviceTime);
 
                 BatteryCharge -= BatteryDischargePerDay * (daysNow - daysPrev);
+
+                // stop basal delivery when the battery is depleted
+                if (BatteryCharge == 0.0)
+                    SendBasalRate(0);
             }
 
             CurrentDateTime = msg.DeviceTime;

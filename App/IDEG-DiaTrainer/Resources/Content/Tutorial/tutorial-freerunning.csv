@@ -1,0 +1,5 @@
+﻿identifier;title;text
+pauseresume;Pause/resume;You can pause and resume the simulation at any time using this button. The simulation pauses automatically when you open any sub-window, such as meal selection, insulin pump and others.
+meal;Meals;By clicking on this button, you open the meal selection window. Select the meal you want to eat and the results will show immediatelly
+pump;Insulin pump;This button opens the insulin pump interface. You can view the pump display, and also control the physical aspects, such as charging the battery or changing the insulin reservoir.
+exercise;Exercise;You can also do some exercise to stay fit. This button opens a window with exercise selection by intensity, with the option to set duration.

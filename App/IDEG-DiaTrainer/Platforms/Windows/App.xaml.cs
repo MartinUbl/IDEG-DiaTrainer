@@ -26,25 +26,5 @@ namespace IDEG_DiaTrainer.WinUI
         }
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
-
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
-        {
-            base.OnLaunched(args);
-
-            Microsoft.Maui.ApplicationModel.Platform.OnLaunched(args);
-
-            var currentWindow = Application.Windows[0].Handler.PlatformView;
-            IntPtr _windowHandle = WindowNative.GetWindowHandle(currentWindow);
-            var windowId = Win32Interop.GetWindowIdFromWindow(_windowHandle);
-
-            AppWindow appWindow = AppWindow.GetFromWindowId(windowId);
-
-            // "maximize" window; this is a workaround, as Maui/WinUI does not yet support maximized mode without PInvoke/Win32
-            appWindow.Move(new Windows.Graphics.PointInt32 { X = DisplayArea.Primary.WorkArea.X, Y = DisplayArea.Primary.WorkArea.Y });
-            appWindow.Resize(new Windows.Graphics.SizeInt32 { Width = DisplayArea.Primary.WorkArea.Width, Height = DisplayArea.Primary.WorkArea.Height });
-
-            // NOTE: allow this for kiosk mode (e.g.; faculty open days, etc.)
-            //appWindow.SetPresenter(FullScreenPresenter.Create());
-        }
     }
 }

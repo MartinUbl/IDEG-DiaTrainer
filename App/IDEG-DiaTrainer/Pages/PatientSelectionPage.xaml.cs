@@ -69,7 +69,7 @@ namespace IDEG_DiaTrainer.Pages
             if (SelectionViewModel.SelectedPatient == null)
                 return;
 
-            await Navigation.PushAsync(new Pages.SimulationPage());
+            await Shell.Current.GoToAsync("simulation", true);
         }
     }
 }
