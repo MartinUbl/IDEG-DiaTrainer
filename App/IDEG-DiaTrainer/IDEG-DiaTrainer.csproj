@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0-maccatalyst;net6.0-android33.0;net6.0-ios15.4</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net6.0-windows10.0.22621.0</TargetFrameworks>
+		<TargetFrameworks>net7.0-android33.0</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net7.0-windows10.0.22621.0</TargetFrameworks>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>IDEG_DiaTrainer</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -170,21 +170,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CsvHelper" Version="28.0.1" />
-	  
-	  <PackageReference Include="Microsoft.Maui.Graphics" Version="6.0.403" />
-	  <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="6.0.403" />
-	  
-	  <PackageReference Include="SkiaSharp" Version="2.88.2" />
+	  <PackageReference Include="CsvHelper" Version="30.0.0" />
+	  <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="7.0.0-rc.2.6866" />
+	  <PackageReference Include="SkiaSharp" Version="2.88.3" />
 	  <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
-	  <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.2" />
-	  <PackageReference Include="SkiaSharp.Views.Maui.Core" Version="2.88.2" />
+	  <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.3" />
+	  <PackageReference Include="SkiaSharp.Views.Maui.Core" Version="2.88.3" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
-		<!-- Required - WinUI does not yet have buildTransitive for everything -->
-		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.3.1" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.220902.1-preview1" />
+	  <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -252,8 +247,36 @@
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	</PropertyGroup>
 
-	<PropertyGroup>
-	  <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.22621.0</TargetFrameworks>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-windows10.0.22621.0|AnyCPU'">
+	  <ApplicationDisplayVersion>$(Version)</ApplicationDisplayVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-windows10.0.22621.0|AnyCPU'">
+	  <ApplicationDisplayVersion>$(Version)</ApplicationDisplayVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-windows10.0.22621.0|x64'">
+	  <ApplicationDisplayVersion>$(Version)</ApplicationDisplayVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-windows10.0.22621.0|x64'">
+	  <ApplicationDisplayVersion>$(Version)</ApplicationDisplayVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-windows10.0.22621.0|ARM32'">
+	  <ApplicationDisplayVersion>$(Version)</ApplicationDisplayVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-windows10.0.22621.0|ARM32'">
+	  <ApplicationDisplayVersion>$(Version)</ApplicationDisplayVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-windows10.0.22621.0|ARM64'">
+	  <ApplicationDisplayVersion>$(Version)</ApplicationDisplayVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-windows10.0.22621.0|ARM64'">
+	  <ApplicationDisplayVersion>$(Version)</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 </Project>

@@ -3,17 +3,21 @@ using Microsoft.Maui.Hosting;
 using Microsoft.Maui.Controls.Compatibility;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.LifecycleEvents;
+using System;
+using System.Threading.Tasks;
+#if WINDOWS
 using Microsoft.UI.Windowing;
 using Microsoft.UI;
-using System;
 using WinRT.Interop;
-using System.Threading.Tasks;
+#endif
 
 namespace IDEG_DiaTrainer
 {
 	public static class MauiProgram
 	{
-		private static bool IsFirstWindowOpened = false;
+#if WINDOWS
+        private static bool IsFirstWindowOpened = false;
+#endif
 
 		public static MauiApp CreateMauiApp()
 		{
