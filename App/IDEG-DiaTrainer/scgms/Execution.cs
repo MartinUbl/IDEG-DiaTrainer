@@ -94,14 +94,13 @@ namespace IDEG_DiaTrainer.scgms
             return list[0];
         }
 
-        public unsafe bool Start(string configName)
+        public unsafe bool Start(string config)
         {
             if (IsRunning)
                 throw new InvalidOperationException("This SCGMS Execution instance has already been started");
 
             Filters.Clear();
 
-            var config = ConfigMgr.ReadConfig(configName);
             StringBuilder sb = new StringBuilder(config);
 
             InteropCallback = SCGMS_Execution_Callback;

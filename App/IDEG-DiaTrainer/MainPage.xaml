@@ -55,9 +55,16 @@
                     SemanticProperties.Hint=""
                     Clicked="OnFreeRunningClicked"
                     />
+                
+                <Button 
+                    Text="Could have I done better?"
+                    FontAttributes="Bold"
+                    SemanticProperties.Hint=""
+                    Clicked="OnCouldClicked"
+                    />
 
                 <Button 
-                    Text="Personalized mode"
+                    Text="Personalize profile"
                     FontAttributes="Bold"
                     SemanticProperties.Hint=""
                     Clicked="OnPersonalizedModeClicked"

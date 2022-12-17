@@ -21,9 +21,14 @@ namespace IDEG_DiaTrainer
             await Shell.Current.GoToAsync("patientselection");
         }
 
-		public async void OnPersonalizedModeClicked(object sender, EventArgs args)
-		{
+        public async void OnPersonalizedModeClicked(object sender, EventArgs args)
+        {
             await Shell.Current.GoToAsync("patientpersonalization");
         }
-	}
+
+        public async void OnCouldClicked(object sender, EventArgs args)
+        {
+            await Shell.Current.GoToAsync("couldselection");
+        }
+    }
 }

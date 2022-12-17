@@ -22,6 +22,7 @@ public partial class AppShell : Shell
     {
         Routes.Add("scenarioselection", typeof(ScenarioSelectionPage));
         Routes.Add("patientselection", typeof(PatientSelectionPage));
+        Routes.Add("couldselection", typeof(PatientCouldSelectionPage));
         Routes.Add("simulation", typeof(SimulationPage));
         Routes.Add("patientpersonalization", typeof(PatientPersonalizationPage));
 

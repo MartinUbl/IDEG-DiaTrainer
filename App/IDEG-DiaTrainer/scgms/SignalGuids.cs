@@ -33,5 +33,7 @@ namespace IDEG_DiaTrainer.scgms
 
         public static readonly Guid BatteryCharge = new Guid("09756178-FB99-4FEB-A9AC-DF37462CC753");
 
+        public static readonly Guid RiskHyper = new Guid("A348CF3F-2667-40C2-8E8E-764DE5C29591");
+        public static readonly Guid RiskHypo = new Guid("FE4ED8DB-C1C0-411C-85E5-78A449F3F18A");
     }
 }

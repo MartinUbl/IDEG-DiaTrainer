@@ -1,55 +1,49 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:conv="clr-namespace:IDEG_DiaTrainer.Helpers.Converters"
              x:Class="IDEG_DiaTrainer.Pages.PatientPersonalizationPage"
              Title="     Patient profile personalization">
+
+    <ContentPage.Resources>
+        <conv:NegateConverter x:Key="NegateConverter" />
+        <conv:EnabledColorConverter x:Key="EnabledColorConverter" />
+    </ContentPage.Resources>
+
     <StackLayout Padding="16" Spacing="8">
-        <Label Text="Load profile"
-               FontSize="Title" />
 
-        <StackLayout>
-            <Label Text="Not implemented yet..." />
-        </StackLayout>
+        <Label Text="(1) Personal profile" BackgroundColor="{Binding IsEnteringPhase, Converter={StaticResource EnabledColorConverter}}" TextColor="White" FontSize="Title" Padding="10" />
 
-        <Label Text="Create profile"
-               FontSize="Title" />
-
-        <StackLayout Orientation="Vertical">
+        <StackLayout IsVisible="{Binding IsEnteringPhase}" Margin="10">
             <Label Text="Profile name" FontSize="Subtitle" />
-            <Entry x:Name="ProfileNameEntry" />
-
-            <Label Text="Age" FontSize="Subtitle" />
-            <Picker x:Name="AgePicker">
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>18-24</x:String>
-                        <x:String>25-34</x:String>
-                        <x:String>35-44</x:String>
-                        <x:String>45-54</x:String>
-                        <x:String>55-64</x:String>
-                        <x:String>65+</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
-
-            <Label Text="Sex" FontSize="Subtitle" />
-            <Picker x:Name="SexPicker">
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Male</x:String>
-                        <x:String>Female</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
+            <Entry x:Name="ProfileNameEntry" Text="{Binding ProfileName}" />
 
             <Label Text="Sensor and pump data file" FontSize="Subtitle" />
             <StackLayout Orientation="Horizontal">
-                <Button x:Name="SelectDataButton" Text="Choose a file" Clicked="SelectDataButton_Clicked" />
-                <Label x:Name="SelectedFileLabel" Text="No file selected..." />
+                <Button x:Name="SelectDataButton" Text="Choose a file" Clicked="SelectDataButton_Clicked" VerticalOptions="Center" />
+                <Label x:Name="SelectedFileLabel" Text="No file selected!" VerticalTextAlignment="Center" VerticalOptions="Center" Margin="30,0,0,0" />
             </StackLayout>
 
             <Label Text="Please note, that personalization may take a long time" />
-            <Button x:Name="PersonalizeButton" Text="Create profile" Clicked="PersonalizeButton_Clicked" />
+            <Button x:Name="PersonalizeButton" Text="Create profile" Clicked="PersonalizeButton_Clicked" IsEnabled="{Binding IsRunning, Converter={StaticResource NegateConverter}}" HorizontalOptions="Center" />
+        </StackLayout>
+
+        <Label Text="(2) Personalization progress" BackgroundColor="{Binding IsOptimizePhase, Converter={StaticResource EnabledColorConverter}}" TextColor="White" FontSize="Title" Padding="10" />
+
+        <StackLayout HorizontalOptions="Center" IsVisible="{Binding IsOptimizePhase}" BackgroundColor="{StaticResource PrimaryColor}" Padding="10" Margin="10">
+            <ActivityIndicator IsRunning="True" HorizontalOptions="Center" Color="White" />
+            <Label Text="Personalization in progress..." IsVisible="{Binding IsPreliminaryAnalysis, Converter={StaticResource NegateConverter}}" HorizontalTextAlignment="Center" TextColor="White" />
+            <Label Text="Analyzing data..." IsVisible="{Binding IsPreliminaryAnalysis}" HorizontalTextAlignment="Center" TextColor="White" />
+            <Label Text="{Binding PctDone, StringFormat='{}{0} %'}" HorizontalTextAlignment="Center" TextColor="White" />
+            <Label Text="{Binding MetricVal,StringFormat='Average error: {0:F2} mmol/L'}" IsVisible="{Binding IsPreliminaryAnalysis, Converter={StaticResource NegateConverter}}" HorizontalTextAlignment="Center" TextColor="White" />
+        </StackLayout>
+
+        <Label Text="(3) Saving the result" BackgroundColor="{Binding IsConfirmationPhase, Converter={StaticResource EnabledColorConverter}}" TextColor="White" FontSize="Title" Padding="10" />
+
+        <StackLayout IsVisible="{Binding IsConfirmationPhase}" HorizontalOptions="FillAndExpand" Margin="10">
+            <Label Text="It seems, that the personalization succeeded!" HorizontalTextAlignment="Center" />
+            <Label Text="{Binding ProfileName, StringFormat='Save under the name of {0}?'}" HorizontalTextAlignment="Center" />
+            <Button x:Name="SaveProfileButton" Text="Save profile" Clicked="SaveProfileButton_Clicked" HorizontalOptions="Center" />
         </StackLayout>
     </StackLayout>
 </ContentPage>

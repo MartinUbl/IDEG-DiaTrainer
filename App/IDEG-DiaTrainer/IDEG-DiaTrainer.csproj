@@ -9,6 +9,8 @@
 		<SingleProject>true</SingleProject>
 		<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
 
+		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+
 		<!-- Display name -->
 		<ApplicationTitle>IDEG-DiaTrainer</ApplicationTitle>
 
@@ -55,12 +57,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Config\config-gct2.ini" />
-	  <None Remove="Config\config-s2013.ini" />
+	  <None Remove="Config\config-bases-could.ini" />
+	  <None Remove="Config\config-bases-free.ini" />
+	  <None Remove="Config\config-bases-learn.ini" />
+	  <None Remove="Config\config-gct2-free.ini" />
+	  <None Remove="Config\config-gct2-learn.ini" />
+	  <None Remove="Config\config-riskfinder.ini" />
 	  <None Remove="Platforms\Windows\lib\x64\filters\approx.dll" />
 	  <None Remove="Platforms\Windows\lib\x64\filters\controllers.dll" />
 	  <None Remove="Platforms\Windows\lib\x64\filters\data.dll" />
 	  <None Remove="Platforms\Windows\lib\x64\filters\drawing.dll" />
+	  <None Remove="Platforms\Windows\lib\x64\filters\experimental.dll" />
 	  <None Remove="Platforms\Windows\lib\x64\filters\log.dll" />
 	  <None Remove="Platforms\Windows\lib\x64\filters\metric.dll" />
 	  <None Remove="Platforms\Windows\lib\x64\filters\model.dll" />
@@ -102,10 +109,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Config\config-gct2.ini">
+	  <EmbeddedResource Include="Config\config-bases-could.ini">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </EmbeddedResource>
-	  <EmbeddedResource Include="Config\config-s2013.ini">
+	  <EmbeddedResource Include="Config\config-bases-free.ini">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Config\config-riskfinder.ini">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Config\config-gct2-learn.ini">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Config\config-bases-learn.ini">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Config\config-gct2-free.ini">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </EmbeddedResource>
 	  <EmbeddedResource Include="Platforms\Windows\lib\x64\filters\approx.dll">
@@ -118,6 +137,9 @@
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </EmbeddedResource>
 	  <EmbeddedResource Include="Platforms\Windows\lib\x64\filters\drawing.dll">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Platforms\Windows\lib\x64\filters\experimental.dll">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </EmbeddedResource>
 	  <EmbeddedResource Include="Platforms\Windows\lib\x64\filters\log.dll">
@@ -170,8 +192,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CsvHelper" Version="30.0.0" />
-	  <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="7.0.0-rc.2.6866" />
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0-preview2" />
+	  <PackageReference Include="CsvHelper" Version="30.0.1" />
+	  <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="7.0.52" />
 	  <PackageReference Include="SkiaSharp" Version="2.88.3" />
 	  <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
 	  <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.3" />
@@ -186,12 +209,27 @@
 	  <Compile Update="Pages\AppShell.xaml.cs">
 	    <DependentUpon>AppShell.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Pages\PatientCouldSelectionPage.xaml.cs">
+	    <DependentUpon>PatientCouldSelectionPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\Popups\InsulinPopup.xaml.cs">
 	    <DependentUpon>InsulinPopup.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Pages\Popups\MealConfirmPopup.xaml.cs">
 	    <DependentUpon>MealConfirmPopup.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Properties\Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -211,6 +249,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\PatientPersonalizationPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\PatientCouldSelectionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\PatientSelectionPage.xaml">

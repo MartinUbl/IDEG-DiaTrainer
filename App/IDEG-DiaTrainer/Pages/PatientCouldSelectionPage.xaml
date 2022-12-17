@@ -1,7 +1,7 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:conv="clr-namespace:IDEG_DiaTrainer.Helpers.Converters"
-             x:Class="IDEG_DiaTrainer.Pages.PatientSelectionPage"
+             x:Class="IDEG_DiaTrainer.Pages.PatientCouldSelectionPage"
              NavigationPage.HasBackButton="True"
              NavigationPage.HasNavigationBar="True"
              Title="     Patient selection"
@@ -31,8 +31,6 @@
 
         <StackLayout Grid.Row="1" Grid.Column="0" Orientation="Vertical">
             <StackLayout Orientation="Horizontal" RadioButtonGroup.GroupName="Models" RadioButtonGroup.SelectedValue="{Binding ModelSelection}">
-                <RadioButton Content="Slow (GCT)" Value="GCT"/>
-                <RadioButton Content="Fast (Bases)" Value="Bases" />
                 <RadioButton Content="Slow, custom patients (GCT)" Value="cGCT"/>
                 <RadioButton Content="Fast, custom patients (Bases)" Value="cBases" />
             </StackLayout>

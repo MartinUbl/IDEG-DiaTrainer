@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -106,6 +107,61 @@ namespace IDEG_DiaTrainer.scgms
             Marshal.FreeHGlobal(strPtr);
 
             return wstrPtr;
+        }
+
+        /*
+         * Optimizer
+         */
+
+        //scgms_optimizer__create_progress_instance(solver::TSolver_Progress** progress)
+        [DllImport("Platforms/Windows/lib/x64/interop-inspector", EntryPoint = "scgms_optimizer__create_progress_instance")]
+        private static extern int internal_OptimizerCreateProgress(out IntPtr obj);
+
+        //scgms_optimizer__optimize_parameters(const char* config, uint32_t optimizeIdx, const char* optimizeParamName, uint32_t optGenCount, uint32_t optPopulationSize, solver::TSolver_Progress* progress, char** target)
+        [DllImport("Platforms/Windows/lib/x64/interop-inspector", EntryPoint = "scgms_optimizer__optimize_parameters", CharSet = CharSet.Ansi)]
+        private static extern int internal_OptimizeParameters(StringBuilder configStr, UInt32 optimizeIdx, StringBuilder optimizeParamName, UInt32 optGetCount, UInt32 optPopulationSize, IntPtr progressInstance, out IntPtr objTarget);
+
+        //scgms_optimizer__dump_progress(solver::TSolver_Progress* progress, double* pctDone, double* bestMetric)
+        [DllImport("Platforms/Windows/lib/x64/interop-inspector", EntryPoint = "scgms_optimizer__dump_progress")]
+        private static extern int internal_DumpProgress(IntPtr obj, out double pctDone, out double bestMetric);
+
+        public static unsafe IntPtr OptimizerCreateProgress()
+        {
+            IntPtr objTarget = IntPtr.Zero;
+
+            internal_OptimizerCreateProgress(out objTarget);
+
+            return objTarget;
+        }
+
+        public static unsafe void OptimizerDisposeProgress(IntPtr progress)
+        {
+            Marshal.FreeHGlobal(progress);
+        }
+
+        public static unsafe string OptimizeParameters(String config, UInt32 optimizeIdx, String optimizeParamName, UInt32 optGetCount, UInt32 optPopulationSize, IntPtr progressInstance)
+        {
+            IntPtr targetParamStr;
+
+            StringBuilder sbConfig = new StringBuilder(config);
+            StringBuilder sbParamName = new StringBuilder(optimizeParamName);
+
+            var res = internal_OptimizeParameters(sbConfig, optimizeIdx, sbParamName, optGetCount, optPopulationSize, progressInstance, out targetParamStr);
+
+            if (res != HResult.S_OK)
+                return null;
+
+            string str = Marshal.PtrToStringAnsi(targetParamStr);
+
+            return str;
+        }
+
+        public static unsafe bool DumpOptimizerProgress(IntPtr obj, out double pctDone, out double bestMetric)
+        {
+            if (internal_DumpProgress(obj, out pctDone, out bestMetric) != HResult.S_OK)
+                return false;
+
+            return true;
         }
     }
 }

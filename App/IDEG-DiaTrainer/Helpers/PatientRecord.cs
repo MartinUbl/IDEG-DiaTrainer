@@ -23,5 +23,8 @@ namespace IDEG_DiaTrainer.Helpers
 
         // diabetes type
         public DiabetesType Diabetes { get; set; }
+
+        // stored params string relevant for given model
+        public string ParameterString { get; set; }
     }
 }

@@ -65,7 +65,7 @@ namespace IDEG_DiaTrainer.Pages
             set { _IsPaused = value; OnPropertyChanged(); }
         }
 
-        private PumpController _Pump = new PumpController();
+        private PumpController _Pump = null;
         public PumpController Pump
         {
             get { return _Pump; }
@@ -87,6 +87,12 @@ namespace IDEG_DiaTrainer.Pages
     {
         // image scale of SVGs; this may be different between platforms
         private static readonly float ImageScale = 0.5f;
+
+        public static Enums.ModelType SelectedModelType = Enums.ModelType.GCTv2;
+        public static Enums.ControlType SelectedControlType = Enums.ControlType.FreeRunning;
+        public static int PatientId = 1;
+        public static bool SelectedCustomPatient = false;
+        public static DateTime? StopTime = null;
 
         // controller of the simulation - holds scgms execution environment
         private Controllers.SimulationController controller;
@@ -125,9 +131,14 @@ namespace IDEG_DiaTrainer.Pages
 
             InitializeComponent();
 
+            // subscribe to messages from controller
+            MessagingCenter.Subscribe<Messages.ValueAvailableMessage>(this, Messages.ValueAvailableMessage.Name, OnValueAvailable);
+            MessagingCenter.Subscribe<Messages.DrawingAvailableMessage>(this, Messages.DrawingAvailableMessage.Name, OnDrawingAvailable);
+            MessagingCenter.Subscribe<Messages.SimulationReadyMessage>(this, Messages.SimulationReadyMessage.Name, OnSimulationReady);
+
             // initialize controller
             controller = new Controllers.SimulationController();
-            controller.Start(-1); // TODO: patient identifier
+            controller.Start(SelectedModelType, SelectedControlType, PatientId, SelectedCustomPatient, StopTime);
 
             // initialize food manager
             foodManager = new Helpers.FoodManager();
@@ -136,10 +147,6 @@ namespace IDEG_DiaTrainer.Pages
             // initialize exercise manager
             exerciseManager = new Helpers.ExerciseManager();
             exerciseManager.Load();
-
-            // subscribe to messages from controller
-            MessagingCenter.Subscribe<Messages.ValueAvailableMessage>(this, Messages.ValueAvailableMessage.Name, OnValueAvailable);
-            MessagingCenter.Subscribe<Messages.DrawingAvailableMessage>(this, Messages.DrawingAvailableMessage.Name, OnDrawingAvailable);
 
             // load tutorial
             // TODO: some persistent flag to store, if the user has already gone through the tutorial
@@ -224,6 +231,14 @@ namespace IDEG_DiaTrainer.Pages
             return null;
         }
 
+        private double StoredBasalRate = 0;
+
+        private void OnSimulationReady(Messages.SimulationReadyMessage msg)
+        {
+            simulationViewModel.Pump = new PumpController();
+            // set StoredBasalRate to pump in future development phases?
+        }
+
         private void OnValueAvailable(Messages.ValueAvailableMessage msg)
         {
             // update viewmodel on new value
@@ -234,6 +249,8 @@ namespace IDEG_DiaTrainer.Pages
                 simulationViewModel.CurrentIOB = msg.Value;
             else if (msg.SignalId == scgms.SignalGuids.COB)
                 simulationViewModel.CurrentCOB = msg.Value;
+            else if (msg.SignalId == scgms.SignalGuids.RequestedInsulinBasalRate || msg.SignalId == scgms.SignalGuids.DeliveredInsulinBasalRate)
+                StoredBasalRate = msg.Value;
 
             simulationViewModel.CurrentDateTime = msg.DeviceTime;
 
@@ -245,14 +262,14 @@ namespace IDEG_DiaTrainer.Pages
 
         private void InvalidateSurfaces()
         {
-            SVGView_Glucose.InvalidateSurface();
-            SVGView_Insulin.InvalidateSurface();
-            SVGView_Carbs.InvalidateSurface();
+            SVGView_Glucose?.InvalidateSurface();
+            SVGView_Insulin?.InvalidateSurface();
+            SVGView_Carbs?.InvalidateSurface();
         }
 
         private void OnDrawingAvailable(Messages.DrawingAvailableMessage msg)
         {
-            if (!ResizeMsgSent)
+            if ((!StopTime.HasValue || simulationViewModel.CurrentDateTime >= StopTime) && !ResizeMsgSent)
             {
                 // calculate the density
                 double dens = 1.0 / ImageScale;
@@ -271,7 +288,8 @@ namespace IDEG_DiaTrainer.Pages
             StoredDrawing_Carbs = controller.GetDrawing(scgms.DrawingFilterInspection.DrawingType.Profile_Carbs);
 
             // invalidate output
-            InvalidateSurfaces();
+            if ((!StopTime.HasValue || simulationViewModel.CurrentDateTime >= StopTime))
+                InvalidateSurfaces();
         }
 
         private void OnGraphPaint_Glucose(object sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e)

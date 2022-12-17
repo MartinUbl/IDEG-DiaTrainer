@@ -1,7 +1,9 @@
-﻿using IDEG_DiaTrainer.Messages;
+﻿using IDEG_DiaTrainer.Config;
+using IDEG_DiaTrainer.Messages;
 using Microsoft.Maui.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +16,7 @@ namespace IDEG_DiaTrainer.Controllers
     public class SimulationController
     {
         // simulation segment ID - it does not matter for frontends like this
-        static readonly ulong SimSegmentId = 1;
+        private ulong SimSegmentId = 1;
 
         // starting time of simulation (every event should be sent with date relative to this one)
         private DateTime StartTime;
@@ -47,12 +49,45 @@ namespace IDEG_DiaTrainer.Controllers
             //
         }
 
+        private void StartTimer()
+        {
+            int msTime = 1000;
+            if (SelectedControlType == Enums.ControlType.CouldHaveIDoneBetter)
+                msTime = 2500;
+
+#pragma warning disable CS0612, CS0618 // Type or member is obsolete
+            Device.StartTimer(TimeSpan.FromMilliseconds(msTime), TimerCallback);
+#pragma warning restore CS0612, CS0618 // Type or member is obsolete
+            TimerStarted = true;
+
+            MessagingCenter.Send(new Messages.SimulationReadyMessage { }, Messages.SimulationReadyMessage.Name);
+        }
+
         /// <summary>
         /// Callback for scgms event
         /// </summary>
         /// <param name="evt">reconstructed managed event</param>
         private void ExecuteCallback(scgms.ScgmsEvent evt)
         {
+            if (SelectedControlType == Enums.ControlType.CouldHaveIDoneBetter)
+            {
+                if (evt.eventCode == scgms.EventCode.Level)
+                {
+                    SimSegmentId = evt.segmentId;
+
+                    //if (TimerStarted)
+                    //    Debug.WriteLine("Level event of level " + evt.level + ", signal " + evt.signalId.ToString());
+                }
+            }
+
+            if (SelectedControlType == Enums.ControlType.CouldHaveIDoneBetter && !TimerStarted)
+            {
+                if (evt.eventCode == scgms.EventCode.Information && evt.infoString == "ReplayStopped")
+                    StartTimer();
+                else
+                    return;
+            }
+
             // Level events get translated into message; it is then broadcast, so every subscriber may receive levels
             if (evt.eventCode == scgms.EventCode.Level)
             {
@@ -65,6 +100,10 @@ namespace IDEG_DiaTrainer.Controllers
                 // after every level event, there may be an update available of drawings - check it and broadcast a message if there is an update available
                 if (DrawingFilter != null && DrawingFilter.NewDataAvailable())
                     MessagingCenter.Send(new Messages.DrawingAvailableMessage { }, Messages.DrawingAvailableMessage.Name);
+            }
+            else if (evt.eventCode == scgms.EventCode.Shut_Down)
+            {
+                MessagingCenter.Send(new Messages.SimulationShutdownMessage { }, Messages.SimulationShutdownMessage.Name);
             }
         }
 
@@ -173,29 +212,84 @@ namespace IDEG_DiaTrainer.Controllers
             return DrawingFilter.Draw(type, scgms.DrawingFilterInspection.Diagnosis.NotSpecified, null, null);
         }
 
+        private Enums.ControlType SelectedControlType;
+        private bool TimerStarted = false;
+
         /// <summary>
         /// Creates scgms execution environment and starts the simulation
         /// </summary>
         /// <param name="patient_id">Id of patient to be simulated</param>
         /// <returns>success?</returns>
-        public bool Start(int patient_id = -1)
+        public bool Start(Enums.ModelType type, Enums.ControlType controlType, int patient_id = -1, bool customPatient = false, DateTime? stopTime = null)
         {
+            SelectedControlType = controlType;
+
             // is the simulation already in progress?
             if (Exec != null)
                 return false;
 
             Exec = new scgms.Execution();
 
+            // retrieve current time, "rewind" to midnight and add 6 hours to start at 6:00 AM
             StartTime = DateTime.UtcNow;
             StartTime = StartTime.AddHours(-StartTime.Hour).AddMinutes(-StartTime.Minute).AddSeconds(-StartTime.Second);
-
             StartTime = StartTime.AddHours(6);
 
             Paused = false;
 
+            string modelConfigName = "";
+            switch (type)
+            {
+                case Enums.ModelType.GCTv2:
+                    modelConfigName = "config-gct2";
+                    break;
+                case Enums.ModelType.Bases:
+                    modelConfigName = "config-bases";
+                    break;
+            }
+
+            Dictionary<string, string> overrides = new Dictionary<string, string>();
+
+            switch (controlType)
+            {
+                case Enums.ControlType.FreeRunning:
+                    modelConfigName += "-free";
+                    break;
+                case Enums.ControlType.CouldHaveIDoneBetter:
+                    modelConfigName += "-could";
+                    overrides["StopTime"] = scgms.Utils.DateTimeToRatTime(stopTime.Value).ToString("0.000000000000000", System.Globalization.CultureInfo.InvariantCulture);
+                    overrides["UploadFilename"] = PatientMgr.GetCustomDataFileFor(patient_id);
+                    StartTime = stopTime.Value;
+                    SimulationTimeCounter = -2;
+                    break;
+
+                case Enums.ControlType.RiskIdentify:
+                    modelConfigName = "config-riskfinder";
+                    overrides["UploadFilename"] = PatientMgr.GetCustomDataFileFor(patient_id);
+                    break;
+            }
+
+            string config = "";
+
+            if (customPatient)
+            {
+                var pat = Config.PatientMgr.GetCustomCohortPatient(type, patient_id);
+
+                overrides["PatientParams"] = pat.Item2;
+
+                config = ConfigMgr.ReadConfig(modelConfigName, overrides);
+            }
+            else
+            {
+                var pat = Config.PatientMgr.GetDefaultCohortPatient(type, patient_id);
+
+                overrides["PatientParams"] = pat.ParameterString;
+
+                config = ConfigMgr.ReadConfig(modelConfigName, overrides);
+            }
+
             Exec.RegisterCallback(ExecuteCallback);
-            // TODO: differentiate between patients, use different configs with different models (and different parameters)
-            if (!Exec.Start("config-gct2"))
+            if (!Exec.Start(config))
                 return false;
 
             // inspect drawing filter
@@ -207,9 +301,8 @@ namespace IDEG_DiaTrainer.Controllers
             }
 
             // start the tick timer
-#pragma warning disable CS0612,CS0618 // Type or member is obsolete
-            Device.StartTimer(TimeSpan.FromMilliseconds(1000), TimerCallback);
-#pragma warning restore CS0612,CS0618 // Type or member is obsolete
+            if (SelectedControlType != Enums.ControlType.CouldHaveIDoneBetter)
+                StartTimer();
 
             // subscribe for controlling messages
             MessagingCenter.Subscribe<InjectCarbsMessage>(this, InjectCarbsMessage.Name, ProcessInjectCarbsMessage);
