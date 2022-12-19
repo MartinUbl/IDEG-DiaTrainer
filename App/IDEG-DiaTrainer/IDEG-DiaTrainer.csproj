@@ -82,9 +82,32 @@
 	  <None Remove="Resources\Content\Exercise\img\sprint.png" />
 	  <None Remove="Resources\Content\Exercise\img\walk.png" />
 	  <None Remove="Resources\Content\Food\food.csv" />
-	  <None Remove="Resources\Content\Food\img\banan.jpg" />
-	  <None Remove="Resources\Content\Food\img\bolonske-spagety.jpg" />
-	  <None Remove="Resources\Content\Food\img\tatranka-coko-liskooriskova-opavia.jpg" />
+	  <None Remove="Resources\Content\Food\img\bramborova-kase.jpg" />
+	  <None Remove="Resources\Content\Food\img\bramborovy-salat-s-majonezou.jpg" />
+	  <None Remove="Resources\Content\Food\img\brambory-varene-bez-slupky.jpg" />
+	  <None Remove="Resources\Content\Food\img\chleb-konzumni-kminovy.jpg" />
+	  <None Remove="Resources\Content\Food\img\dynova-polevka.jpg" />
+	  <None Remove="Resources\Content\Food\img\gulas-hovezi.jpg" />
+	  <None Remove="Resources\Content\Food\img\houbova-smazenice-s-vejci.jpg" />
+	  <None Remove="Resources\Content\Food\img\hranolky.jpg" />
+	  <None Remove="Resources\Content\Food\img\hroznove-vino.jpg" />
+	  <None Remove="Resources\Content\Food\img\jablko.jpg" />
+	  <None Remove="Resources\Content\Food\img\kava-s-mlekem-bez-cukru.jpg" />
+	  <None Remove="Resources\Content\Food\img\kureci-maso-pecene.jpg" />
+	  <None Remove="Resources\Content\Food\img\mandarinka.jpg" />
+	  <None Remove="Resources\Content\Food\img\michana-vajicka.jpg" />
+	  <None Remove="Resources\Content\Food\img\mleko-plnotucne-3-5.jpg" />
+	  <None Remove="Resources\Content\Food\img\most-jablecny.jpg" />
+	  <None Remove="Resources\Content\Food\img\niva-plisnovy-syr.jpg" />
+	  <None Remove="Resources\Content\Food\img\ovesne-vlocky.jpg" />
+	  <None Remove="Resources\Content\Food\img\paprika-cervena.jpg" />
+	  <None Remove="Resources\Content\Food\img\parek-vidensky.jpg" />
+	  <None Remove="Resources\Content\Food\img\rizoto-s-kurecim-masem-a-zeleninou.jpg" />
+	  <None Remove="Resources\Content\Food\img\rohlik-bily.jpg" />
+	  <None Remove="Resources\Content\Food\img\sekana-domaci.jpg" />
+	  <None Remove="Resources\Content\Food\img\slanina-anglicka.jpg" />
+	  <None Remove="Resources\Content\Food\img\vejce-slepici.jpg" />
+	  <None Remove="Resources\Content\Food\img\veprovy-smazeny-rizek.jpg" />
 	  <None Remove="Resources\Content\Tutorial\tutorial-freerunning.csv" />
 	  <None Remove="Resources\Images\appicon.png" />
 	  <None Remove="Resources\Images\cloudyday.png" />
@@ -179,7 +202,85 @@
 	  <EmbeddedResource Include="Resources\Content\Food\img\bolonske-spagety.jpg">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\bramborova-kase.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\bramborovy-salat-s-majonezou.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\brambory-varene-bez-slupky.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\chleb-konzumni-kminovy.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\dynova-polevka.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\gulas-hovezi.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\houbova-smazenice-s-vejci.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\hranolky.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\hroznove-vino.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\jablko.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\kava-s-mlekem-bez-cukru.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\kureci-maso-pecene.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\mandarinka.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\michana-vajicka.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\mleko-plnotucne-3-5.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\most-jablecny.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\niva-plisnovy-syr.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\ovesne-vlocky.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\paprika-cervena.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\parek-vidensky.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\rizoto-s-kurecim-masem-a-zeleninou.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\rohlik-bily.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\sekana-domaci.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\slanina-anglicka.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
 	  <EmbeddedResource Include="Resources\Content\Food\img\tatranka-coko-liskooriskova-opavia.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\vejce-slepici.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Content\Food\img\veprovy-smazeny-rizek.jpg">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </EmbeddedResource>
 	  <EmbeddedResource Include="Resources\Content\Tutorial\tutorial-freerunning.csv">
@@ -217,6 +318,9 @@
 	  </Compile>
 	  <Compile Update="Pages\Popups\MealConfirmPopup.xaml.cs">
 	    <DependentUpon>MealConfirmPopup.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\CouldHaveResultsPage.xaml.cs">
+	    <DependentUpon>CouldHaveResultsPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Properties\Resources.Designer.cs">
 	    <DesignTime>True</DesignTime>
@@ -268,6 +372,9 @@
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Popups\MealPopup.xaml">
 	    <Generator></Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\CouldHaveResultsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\ScenarioSelectionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>

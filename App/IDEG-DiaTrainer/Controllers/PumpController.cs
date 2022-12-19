@@ -54,9 +54,14 @@ namespace IDEG_DiaTrainer.Controllers
             MessagingCenter.Subscribe<Messages.ValueAvailableMessage>(this, Messages.ValueAvailableMessage.Name, OnValueAvailable);
         }
 
+        private bool IsInValueHandler = false;
+
         private void OnValueAvailable(Messages.ValueAvailableMessage msg)
         {
+            if (IsInValueHandler)
+                return;
 
+            IsInValueHandler = true;
 
             // process all present values
 
@@ -84,10 +89,16 @@ namespace IDEG_DiaTrainer.Controllers
                 CurrentIOB = msg.Value;
             // discard past values
             if (msg.DeviceTime < CurrentDateTime)
+            {
+                IsInValueHandler = false;
                 return;
+            }
             // do not update pump controller variables when the time did not change
             if (msg.DeviceTime == CurrentDateTime)
+            {
+                IsInValueHandler = false;
                 return;
+            }
 
             if (CurrentDateTime != DateTime.MinValue)
             {
@@ -102,6 +113,7 @@ namespace IDEG_DiaTrainer.Controllers
             }
 
             CurrentDateTime = msg.DeviceTime;
+            IsInValueHandler = false;
         }
 
         public bool SendBolus(double amount)

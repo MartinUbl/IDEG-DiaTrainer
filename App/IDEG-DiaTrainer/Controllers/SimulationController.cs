@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace IDEG_DiaTrainer.Controllers
 {
@@ -29,6 +30,9 @@ namespace IDEG_DiaTrainer.Controllers
 
         // simulation time counter to properly align all events
         private long SimulationTimeCounter = 0;
+
+        // simulation timer
+        private System.Timers.Timer SimTimer;
 
         // is the simulation paused?
         private bool Paused = false;
@@ -56,12 +60,21 @@ namespace IDEG_DiaTrainer.Controllers
                 msTime = 2500;
 
 #pragma warning disable CS0612, CS0618 // Type or member is obsolete
-            Device.StartTimer(TimeSpan.FromMilliseconds(msTime), TimerCallback);
+            //Device.StartTimer(TimeSpan.FromMilliseconds(msTime), TimerCallback);
 #pragma warning restore CS0612, CS0618 // Type or member is obsolete
+
+            SimTimer = new System.Timers.Timer(TimeSpan.FromMilliseconds(msTime));
+            SimTimer.Elapsed += TimerCallback;
+            SimTimer.AutoReset = true;
+            SimTimer.Start();
+
+
             TimerStarted = true;
 
             MessagingCenter.Send(new Messages.SimulationReadyMessage { }, Messages.SimulationReadyMessage.Name);
         }
+
+        private bool ShutDownReceived = false;
 
         /// <summary>
         /// Callback for scgms event
@@ -103,6 +116,7 @@ namespace IDEG_DiaTrainer.Controllers
             }
             else if (evt.eventCode == scgms.EventCode.Shut_Down)
             {
+                ShutDownReceived = true;
                 MessagingCenter.Send(new Messages.SimulationShutdownMessage { }, Messages.SimulationShutdownMessage.Name);
             }
         }
@@ -140,6 +154,15 @@ namespace IDEG_DiaTrainer.Controllers
             Exec.InjectEvent(evt);
         }
 
+        private void InjectShutDown()
+        {
+            scgms.ScgmsEvent evt = new scgms.ScgmsEvent();
+            evt.eventCode = scgms.EventCode.Shut_Down;
+            evt.segmentId = SimSegmentId;
+            evt.deviceTime = scgms.Utils.UnixTimeToRatTime(GetCurrentSimulationUnixTimestamp());
+            Exec.InjectEvent(evt);
+        }
+
         private void InjectLevelEventWithCancellation(Guid signalId, double level, DateTime? when = null, int cancelAfterXSeconds = 5*60)
         {
             DateTime cancelAt = when.HasValue ? when.Value : StartTime;
@@ -156,10 +179,10 @@ namespace IDEG_DiaTrainer.Controllers
         /// Timer callback - this is the tick source for simulation
         /// </summary>
         /// <returns>repeat the timer?</returns>
-        private bool TimerCallback()
+        private void TimerCallback(Object source, ElapsedEventArgs e)
         {
             if (Paused)
-                return true;
+                return;
 
             // cancel temporary events
             DateTime currentTime = StartTime.AddSeconds(5 * 60 * (SimulationTimeCounter + 1));
@@ -177,8 +200,6 @@ namespace IDEG_DiaTrainer.Controllers
 
             // increase stored simulation time
             SimulationTimeCounter++;
-
-            return true;
         }
 
         /// <summary>
@@ -342,6 +363,28 @@ namespace IDEG_DiaTrainer.Controllers
         public bool IsPaused()
         {
             return Paused;
+        }
+
+        public void Stop()
+        {
+            if (Exec == null)
+            {
+                // already stopped
+                return;
+            }
+
+            SimTimer.Stop();
+            SimTimer.Dispose();
+            SimTimer = null;
+
+            ShutDownReceived = false;
+
+            for (int i = 0; i < 5 && !ShutDownReceived; i++)
+                InjectShutDown();
+
+            Exec.Dispose();
+            Exec = null;
+            Paused = false;
         }
 
         /// <summary>

@@ -14,6 +14,18 @@ namespace IDEG_DiaTrainer.Helpers
     /// </summary>
     public class ExerciseManager
     {
+        private static ExerciseManager _Instance = null;
+
+        public static ExerciseManager Instance
+        {
+            get
+            {
+                if (_Instance == null)
+                    _Instance = new ExerciseManager();
+                return _Instance;
+            }
+        }
+
         // list of all loaded records
         private List<ExerciseRecord> Records;
 

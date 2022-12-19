@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using IDEG_DiaTrainer.Helpers;
 using Microsoft.Maui.Controls;
 
 namespace IDEG_DiaTrainer
@@ -9,6 +10,9 @@ namespace IDEG_DiaTrainer
 		public MainPage()
 		{
 			InitializeComponent();
+
+            FoodManager.Instance.Load();
+            ExerciseManager.Instance.Load();
 		}
 
 		public async void OnScenarioClicked(object sender, EventArgs args)

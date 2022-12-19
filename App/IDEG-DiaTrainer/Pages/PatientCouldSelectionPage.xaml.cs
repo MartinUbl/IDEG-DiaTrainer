@@ -128,6 +128,7 @@ namespace IDEG_DiaTrainer.Pages
             public bool isHyper = false;
             public DateTime when;
             public double duration;
+            public double avg;
         }
 
         private List<RiskEpisode> RiskEpisodes = new List<RiskEpisode>();
@@ -143,7 +144,8 @@ namespace IDEG_DiaTrainer.Pages
                 RiskEpisodes.Add(new RiskEpisode {
                     isHyper = true,
                     when = msg.DeviceTime,
-                    duration = msg.Value
+                    duration = msg.Value,
+                    avg = 0,
                 });
             }
             else if (msg.SignalId == scgms.SignalGuids.RiskHypo)
@@ -152,8 +154,17 @@ namespace IDEG_DiaTrainer.Pages
                 {
                     isHyper = false,
                     when = msg.DeviceTime,
-                    duration = msg.Value
+                    duration = msg.Value,
+                    avg = 0,
                 });
+            }
+            else if (msg.SignalId == scgms.SignalGuids.RiskAvgValue)
+            {
+                foreach (var ep in RiskEpisodes)
+                {
+                    if (ep.when == msg.DeviceTime)
+                        ep.avg = msg.Value;
+                }
             }
         }
 
@@ -165,19 +176,24 @@ namespace IDEG_DiaTrainer.Pages
 
             foreach (var eps in RiskEpisodes)
             {
-                Debug.WriteLine("Identified " + (eps.isHyper ? "hyper" : "hypo") + " at " + eps.when.ToString() + " lasting " + eps.duration + " minutes");
+                Debug.WriteLine("Identified " + (eps.isHyper ? "hyper" : "hypo") + " at " + eps.when.ToString() + " lasting " + eps.duration + " minutes, avg glycemia = " + eps.avg + " mmol/L");
             }
 
             Random random = new Random();
             int idx = random.Next(0, RiskEpisodes.Count);
 
             SimulationPage.StopTime = RiskEpisodes[idx].when.AddMinutes(-15);
+            SimulationPage.TerminateTime = RiskEpisodes[idx].when.AddMinutes(RiskEpisodes[idx].duration + 60);
+
+            SimulationPage.MeasureStartTime = RiskEpisodes[idx].when;
+            SimulationPage.MeasureStopTime = RiskEpisodes[idx].when.AddMinutes(RiskEpisodes[idx].duration);
+            SimulationPage.MeasureAvgGlycemia = RiskEpisodes[idx].avg;
 
             Dispatcher.Dispatch(async () => {
 
                 await DisplayAlert("All set",
                     "The application went through the data you supplied and found a " + (RiskEpisodes[idx].isHyper ? "hyperglycemic" : "hypoglycemic") + " episode from " + RiskEpisodes[idx].when.ToString() +
-                    " that you previously failed to handle well. Your task is to handle it correctly this time.", "I understand, let's do it");
+                    " that you previously failed to handle well. Your task is to handle it correctly this time. The simulation starts 15 minutes prior the episode and ends an hour after the end.", "I understand, let's do it");
 
                 await Shell.Current.GoToAsync("simulation", true);
             });

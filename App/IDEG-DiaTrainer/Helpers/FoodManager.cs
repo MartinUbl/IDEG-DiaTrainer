@@ -14,10 +14,22 @@ namespace IDEG_DiaTrainer.Helpers
     /// </summary>
     public class FoodManager
     {
+        private static FoodManager _Instance = null;
+
+        public static FoodManager Instance
+        {
+            get
+            {
+                if (_Instance == null)
+                    _Instance = new FoodManager();
+                return _Instance;
+            }
+        }
+
         // list of all loaded records
         private List<FoodRecord> Records;
 
-        public FoodManager()
+        private FoodManager()
         {
             //
         }

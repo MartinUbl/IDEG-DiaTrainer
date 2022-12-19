@@ -1,0 +1,12 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IDEG_DiaTrainer.Pages.CouldHaveResultsPage"
+             Title="Results">
+    <VerticalStackLayout>
+        <Label Text="Your test run is done!" VerticalOptions="Center" HorizontalOptions="Center" FontSize="Title" Margin="15" />
+
+        <Label Text="{Binding ResultText}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" Margin="15" />
+
+        <Button x:Name="OKButton" Clicked="OKButton_Clicked" Text="OK! Go back" HorizontalOptions="CenterAndExpand" />
+    </VerticalStackLayout>
+</ContentPage>

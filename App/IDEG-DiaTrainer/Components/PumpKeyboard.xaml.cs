@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -23,7 +24,7 @@ namespace IDEG_DiaTrainer.Components
             set
             {
                 _TextValue = value;
-                if (!Double.TryParse(_TextValue, out _NumericValue))
+                if (!Double.TryParse(_TextValue, CultureInfo.InvariantCulture, out _NumericValue))
                     _NumericValue = 0;
 
                 OnPropertyChanged("TextValue");

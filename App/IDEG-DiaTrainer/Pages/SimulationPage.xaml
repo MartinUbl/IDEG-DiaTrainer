@@ -67,19 +67,19 @@
 
                 <Label Text="Current glucose" Grid.Row="0" Grid.Column="0" />
                 <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Padding="0,0,0,15" VerticalOptions="FillAndExpand">
-                    <Label x:Name="GlucoseLabel" Text="{Binding CurrentGlucose, StringFormat='{0:#,#.0}'}" FontSize="Large" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" />
+                    <Label x:Name="GlucoseLabel" Text="{Binding CurrentGlucose, StringFormat='{0:#,#0.0}'}" FontSize="Large" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" />
                     <Label Text="mmol/L" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" Padding="10,15,0,0" />
                 </StackLayout>
 
                 <Label Text="Current insulin on board" Grid.Row="2" Grid.Column="0" />
                 <StackLayout Orientation="Horizontal" Grid.Row="3" Grid.Column="0" Padding="0,0,0,15" VerticalOptions="FillAndExpand">
-                    <Label x:Name="IOBLabel" Text="{Binding CurrentIOB, StringFormat='{0:#,#.0}'}" FontSize="Large" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" />
+                    <Label x:Name="IOBLabel" Text="{Binding CurrentIOB, StringFormat='{0:#,#0.0}'}" FontSize="Large" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" />
                     <Label Text="U" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" Padding="10,15,0,0" />
                 </StackLayout>
 
                 <Label Text="Current carbohydrates on board" Grid.Row="0" Grid.Column="1" />
                 <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Padding="0,0,0,15" VerticalOptions="FillAndExpand">
-                    <Label x:Name="COBLabel" Text="{Binding CurrentCOB, StringFormat='{0:#,#.0}'}" FontSize="Large" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" />
+                    <Label x:Name="COBLabel" Text="{Binding CurrentCOB, StringFormat='{0:#,#0.0}'}" FontSize="Large" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" />
                     <Label Text="g" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" Padding="10,15,5,5" />
                 </StackLayout>
 
@@ -89,6 +89,11 @@
                 <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="3" Padding="0,0,0,15" VerticalOptions="FillAndExpand">
                     <Label Text="{Binding CurrentDateTime, Mode=OneWay, Converter={StaticResource TimeFormatConverter}}" FontSize="Large" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" TextColor="{Binding IsPaused, Converter={StaticResource ConditionalColorConverter}, ConverterParameter='#FF0000|#0000FF', Mode=OneWay}" />
                     <Label Text="{Binding CurrentDateTime, Mode=OneWay, Converter={StaticResource DayOfWeekConverter}}" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" Padding="10,15,5,5" />
+                </StackLayout>
+
+                <Label Text="Remaining minutes" Grid.Row="2" Grid.Column="3" IsVisible="{Binding HasRemainingTime}" />
+                <StackLayout Orientation="Horizontal" Grid.Row="3" Grid.Column="3" Padding="0,0,0,15" VerticalOptions="FillAndExpand" IsVisible="{Binding HasRemainingTime}">
+                    <Label Text="{Binding RemainingTime, Mode=OneWay, StringFormat='{0} minutes'}" FontSize="Large" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" TextColor="{Binding IsPaused, Converter={StaticResource ConditionalColorConverter}, ConverterParameter='#FF0000|#0000FF', Mode=OneWay}" />
                 </StackLayout>
 
                 <Label Text="Daily routine timeline" Grid.Row="0" Grid.Column="4" />

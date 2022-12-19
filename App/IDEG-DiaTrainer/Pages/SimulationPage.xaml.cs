@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Runtime.Versioning;
 using IDEG_DiaTrainer.Controllers;
 using IDEG_DiaTrainer.Helpers;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 using SkiaSharp;
-using SkiaSharp.Views.Maui.Controls;
 
 namespace IDEG_DiaTrainer.Pages
 {
@@ -56,6 +52,22 @@ namespace IDEG_DiaTrainer.Pages
             set { _CurrentDateTime = value; OnPropertyChanged(); }
         }
 
+        private bool _HasRemainingTime = false;
+        public bool HasRemainingTime
+        {
+            get { return _HasRemainingTime;  }
+            set { _HasRemainingTime = value; OnPropertyChanged(); }
+        }
+
+        // storage parameter - current datetime
+        private int _RemainingTime = -1;
+        // property parameter - current insulin on board
+        public int RemainingTime
+        {
+            get { return _RemainingTime; }
+            set { _RemainingTime = value; OnPropertyChanged(); }
+        }
+
         // storage parameter - is simulation paused?
         private Boolean _IsPaused = false;
         // property parameter - is simulation paused?
@@ -94,14 +106,19 @@ namespace IDEG_DiaTrainer.Pages
         public static bool SelectedCustomPatient = false;
         public static DateTime? StopTime = null;
 
+        public static DateTime? TerminateTime = null;
+
+        public static DateTime? MeasureStartTime = null;
+        public static DateTime? MeasureStopTime = null;
+        public static double MeasureAvgGlycemia = 0;
+
+        private double MeasureAvg = 0;
+        private int MeasureCnt = 0;
+
+        private int CntInRisk = 0;
+
         // controller of the simulation - holds scgms execution environment
         private Controllers.SimulationController controller;
-
-        // food manager - loads and manages known food
-        private Helpers.FoodManager foodManager;
-
-        // exercise manager - loads and manages known exercise
-        private Helpers.ExerciseManager exerciseManager;
 
         // viewmodel instance
         private SimulationViewModel simulationViewModel = new SimulationViewModel();
@@ -127,6 +144,7 @@ namespace IDEG_DiaTrainer.Pages
 
         public SimulationPage()
         {
+            simulationViewModel.CurrentDateTime = DateTime.UtcNow.Subtract(TimeSpan.FromDays(365 * 30)); // 30 years in the past, so the value gets initialized properly
             BindingContext = simulationViewModel;
 
             InitializeComponent();
@@ -140,13 +158,9 @@ namespace IDEG_DiaTrainer.Pages
             controller = new Controllers.SimulationController();
             controller.Start(SelectedModelType, SelectedControlType, PatientId, SelectedCustomPatient, StopTime);
 
-            // initialize food manager
-            foodManager = new Helpers.FoodManager();
-            foodManager.Load();
-
-            // initialize exercise manager
-            exerciseManager = new Helpers.ExerciseManager();
-            exerciseManager.Load();
+            simulationViewModel.HasRemainingTime = TerminateTime.HasValue;
+            if (simulationViewModel.HasRemainingTime)
+                simulationViewModel.RemainingTime = 0;
 
             // load tutorial
             // TODO: some persistent flag to store, if the user has already gone through the tutorial
@@ -171,6 +185,17 @@ namespace IDEG_DiaTrainer.Pages
             };
             TutorialStartTimer.Enabled = true;
             TutorialStartTimer.AutoReset = false;
+        }
+
+        public void Dispose()
+        {
+            TutorialStartTimer?.Dispose();
+
+            MessagingCenter.Unsubscribe<Messages.ValueAvailableMessage>(this, Messages.ValueAvailableMessage.Name);
+            MessagingCenter.Unsubscribe<Messages.DrawingAvailableMessage>(this, Messages.DrawingAvailableMessage.Name);
+            MessagingCenter.Unsubscribe<Messages.SimulationReadyMessage>(this, Messages.SimulationReadyMessage.Name);
+
+            controller.Stop();
         }
 
         private void LoadTutorialAtPos(int pos)
@@ -244,7 +269,18 @@ namespace IDEG_DiaTrainer.Pages
             // update viewmodel on new value
 
             if (msg.SignalId == scgms.SignalGuids.InterstitiaryGlucose)
+            {
                 simulationViewModel.CurrentGlucose = msg.Value;
+
+                if (MeasureStartTime != null && MeasureStopTime != null && msg.DeviceTime >= MeasureStartTime && msg.DeviceTime <= MeasureStopTime)
+                {
+                    MeasureAvg += msg.Value;
+                    MeasureCnt++;
+
+                    if (msg.Value > 10 || msg.Value < 4)
+                        CntInRisk++;
+                }
+            }
             else if (msg.SignalId == scgms.SignalGuids.IOB)
                 simulationViewModel.CurrentIOB = msg.Value;
             else if (msg.SignalId == scgms.SignalGuids.COB)
@@ -252,9 +288,36 @@ namespace IDEG_DiaTrainer.Pages
             else if (msg.SignalId == scgms.SignalGuids.RequestedInsulinBasalRate || msg.SignalId == scgms.SignalGuids.DeliveredInsulinBasalRate)
                 StoredBasalRate = msg.Value;
 
-            simulationViewModel.CurrentDateTime = msg.DeviceTime;
+            // only step forward (some models emit values in past)
+            if (msg.DeviceTime > simulationViewModel.CurrentDateTime)
+            {
+                simulationViewModel.CurrentDateTime = msg.DeviceTime;
 
-            Dispatcher.Dispatch(() => {
+                if (TerminateTime != null)
+                {
+                    simulationViewModel.RemainingTime = (int)((TerminateTime - msg.DeviceTime).Value.TotalMinutes);
+
+                    if (msg.DeviceTime >= TerminateTime)
+                    {
+                        Dispatcher.Dispatch(async () =>
+                        {
+                            controller.Stop();
+
+                            double avg = (MeasureCnt > 0) ? (MeasureAvg / (double)MeasureCnt) : MeasureAvg;
+                            double timeInRisk = (double)CntInRisk*5;
+                            double timeOrig = (MeasureStopTime - MeasureStartTime).Value.TotalMinutes;
+
+                            CouldHaveResultsPage.ValueDelta = avg - MeasureAvgGlycemia;
+                            CouldHaveResultsPage.TimeDelta = timeInRisk - timeOrig;
+
+                            await Shell.Current.GoToAsync("couldhaveresults");
+                        });
+                    }
+                }
+            }
+
+            Dispatcher.Dispatch(() =>
+            {
                 TimelineDrawable.CurrentDateTime = simulationViewModel.CurrentDateTime;
                 TimelineCanvas.Invalidate();
             });
@@ -367,7 +430,7 @@ namespace IDEG_DiaTrainer.Pages
             SimulationModalOverlay.IsVisible = true;
             SimulationModalOverlay.FadeTo(0.5, 300);
 
-            WindowManager.Instance.OpenWindow(WindowTypes.Meal, new Popups.MealPopup(foodManager), true, async () => {
+            WindowManager.Instance.OpenWindow(WindowTypes.Meal, new Popups.MealPopup(FoodManager.Instance), true, async () => {
                 if (!prevState)
                     Resume();
 
@@ -403,7 +466,7 @@ namespace IDEG_DiaTrainer.Pages
             SimulationModalOverlay.IsVisible = true;
             SimulationModalOverlay.FadeTo(0.5, 300);
 
-            WindowManager.Instance.OpenWindow(WindowTypes.Exercise, new Popups.ExercisePopup(exerciseManager), true, async () => {
+            WindowManager.Instance.OpenWindow(WindowTypes.Exercise, new Popups.ExercisePopup(ExerciseManager.Instance), true, async () => {
                 if (!prevState)
                     Resume();
 

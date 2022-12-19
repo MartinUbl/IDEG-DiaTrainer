@@ -1,4 +1,30 @@
 id;name;img;baseamount;portionamount;unit;calories;carbohydrates;sugar;fat;proteins;fibre
-banan;banán;banan.jpg;100;100;g;94;22;19;;1;2
-bolonske-spagety;boloňské špagety;bolonske-spagety.jpg;100;100;g;157;20;2;5;8;
-tatranka-coko-liskooriskova-opavia;Tatranka čoko lískooříšková Opavia;tatranka-coko-liskooriskova-opavia.jpg;100;100;g;537;57;39;30;7;3
+banan;banán;banan.jpg;100;100;g;94;22;19;;;2
+bolonske-spagety;boloňské špagety;bolonske-spagety.jpg;100;100;g;157;20;;5;;
+tatranka-coko-liskooriskova-opavia;Tatranka čoko lískooříšková Opavia;tatranka-coko-liskooriskova-opavia.jpg;100;100;g;537;57;39;30;;
+kava-s-mlekem-bez-cukru;káva s mlékem bez cukru;kava-s-mlekem-bez-cukru.jpg;100;100;g;12;1;1;;;
+brambory-varene-bez-slupky;brambory vařené bez slupky;brambory-varene-bez-slupky.jpg;100;100;g;85;;;;;
+chleb-konzumni-kminovy;chléb konzumní kmínový;chleb-konzumni-kminovy.jpg;100;100;g;244;45;;;8;4
+vejce-slepici;vejce slepičí;vejce-slepici.jpg;100;100;g;151;;;;;
+rohlik-bily;rohlík bílý;rohlik-bily.jpg;100;100;g;310;;;;;
+jablko;jablko;jablko.jpg;100;100;g;63;;;;;
+paprika-cervena;paprika červená;paprika-cervena.jpg;100;100;g;35;6;;;1;
+michana-vajicka;míchaná vejce (vajíčka);michana-vajicka.jpg;100;100;g;166;;;;;
+ovesne-vlocky;ovesné vločky;ovesne-vlocky.jpg;100;100;g;400;;;;;
+mleko-plnotucne-3-5;mléko plnotučné 3,5%;mleko-plnotucne-3-5.jpg;100;100;g;64;;;;;
+bramborova-kase;bramborová kaše;bramborova-kase.jpg;100;100;g;115;;;;;1
+mandarinka;mandarinka;mandarinka.jpg;100;100;g;57;12;9;;;
+hranolky;hranolky;hranolky.jpg;100;100;g;275;35;;;;3
+kureci-maso-pecene;kuřecí maso pečené;kureci-maso-pecene.jpg;100;100;g;146;0;0;;20;
+sekana-domaci;sekaná domácí;sekana-domaci.jpg;100;100;g;266;;1;19;;
+dynova-polevka;dýňová polévka;dynova-polevka.jpg;100;100;g;61;;;;;
+slanina-anglicka;slanina anglická;slanina-anglicka.jpg;100;100;g;403;;;;;
+parek-vidensky;párek vídeňský (vepřový);parek-vidensky.jpg;100;100;g;277;1;;25;;
+veprovy-smazeny-rizek;vepřový smažený řízek;veprovy-smazeny-rizek.jpg;100;100;g;411;15;;;;
+bramborovy-salat-s-majonezou;bramborový salát s majonézou;bramborovy-salat-s-majonezou.jpg;100;100;g;216;12;3;;2;
+hroznove-vino;hroznové víno;hroznove-vino.jpg;100;100;g;77;;;;;
+houbova-smazenice-s-vejci;houbová smaženice s vejci;houbova-smazenice-s-vejci.jpg;100;100;g;237;2;;18;16;
+gulas-hovezi;guláš hovězí;gulas-hovezi.jpg;100;100;g;163;;;;;
+most-jablecny;mošt jablečný;most-jablecny.jpg;100;100;g;43;10;10;;0;1
+niva-plisnovy-syr;niva plísňový sýr;niva-plisnovy-syr.jpg;100;100;g;381;;;;;
+rizoto-s-kurecim-masem-a-zeleninou;rizoto s kuřecím masem a zeleninou;rizoto-s-kurecim-masem-a-zeleninou.jpg;100;100;g;135;;;;;
