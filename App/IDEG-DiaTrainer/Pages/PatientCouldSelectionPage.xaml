@@ -4,7 +4,7 @@
              x:Class="IDEG_DiaTrainer.Pages.PatientCouldSelectionPage"
              NavigationPage.HasBackButton="True"
              NavigationPage.HasNavigationBar="True"
-             Title="     Patient selection"
+             Title="Patient selection"
              BackgroundColor="{DynamicResource SecondaryColor}">
 
     <ContentPage.Resources>

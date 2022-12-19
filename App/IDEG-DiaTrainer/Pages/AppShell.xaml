@@ -9,6 +9,14 @@
     <Shell.TitleView>
     </Shell.TitleView>
 
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Shell" ApplyToDerivedTypes="True">
+                <Setter Property="Shell.ForegroundColor" Value="{OnPlatform WinUI={StaticResource Primary}, Default={StaticResource White}}"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
+
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate global:MainPage}"

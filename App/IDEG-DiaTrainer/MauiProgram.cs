@@ -44,13 +44,15 @@ namespace IDEG_DiaTrainer
 								window.ExtendsContentIntoTitleBar = true;
 
 								await Task.Delay(100);
-								window.SetTitleBar(null);
+								//window.SetTitleBar(null);
+								window.Title = "SmartCGMS - Trainer suite";
 
 								IsFirstWindowOpened = true;
 								IntPtr nativeWindowHandle = WindowNative.GetWindowHandle(window);
 								WindowId win32WindowsId = Win32Interop.GetWindowIdFromWindow(nativeWindowHandle);
 
 								AppWindow appWindow = AppWindow.GetFromWindowId(win32WindowsId);
+								appWindow.Title = window.Title;
 
 								// "maximize" window; this is a workaround, as Maui/WinUI does not yet support maximized mode without PInvoke/Win32
 
