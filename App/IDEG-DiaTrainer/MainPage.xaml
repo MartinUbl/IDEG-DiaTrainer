@@ -41,13 +41,7 @@
                 HorizontalOptions="CenterAndExpand" />
 
             <StackLayout Orientation="Vertical" Grid.Row="4" HorizontalOptions="CenterAndExpand" Spacing="15">
-                <Button 
-                    Text="Scenario mode"
-                    FontAttributes="Bold"
-                    SemanticProperties.Hint=""
-                    Clicked="OnScenarioClicked"
-                    WidthRequest="250"
-                    />
+                <!--Button Text="Scenario mode" FontAttributes="Bold" SemanticProperties.Hint="" Clicked="OnScenarioClicked" WidthRequest="250" /-->
 
                 <Button 
                     Text="Free-running mode"

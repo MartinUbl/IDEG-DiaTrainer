@@ -65,7 +65,7 @@ namespace IDEG_DiaTrainer
 								}
 
 								// NOTE: allow this for kiosk mode (e.g.; faculty open days, etc.)
-								//appWindow.SetPresenter(FullScreenPresenter.Create());
+								appWindow.SetPresenter(FullScreenPresenter.Create());
 							}
 						});
 					});
